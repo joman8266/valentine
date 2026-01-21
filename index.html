@@ -9,48 +9,76 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* Reset and Base */
+        * { box-sizing: border-box; }
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             overflow: hidden; background-color: #000; 
             font-family: 'Lora', serif; 
         }
 
+        /* Presentation Engine - Centering Logic */
         #presentation-wrapper { 
             width: 100%; height: 100%; 
-            display: flex; flex-direction: column; 
-            transition: transform 0.8s cubic-bezier(0.45, 0, 0.55, 1); 
+            transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1); 
         }
 
         .slide-container { 
             width: 100vw; height: 100vh; 
-            background: #fff;
-            position: relative; flex-shrink: 0;
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center;
-            text-align: center; padding: 40px;
+            position: relative;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;     
+            text-align: center;
+            padding: 40px;
         }
 
-        /* 80s Aesthetic */
+        /* Backgrounds */
         .slide-1 { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%); }
         .slide-2 { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); }
         .slide-3 { background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%); }
         .slide-4 { background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%); }
 
-        h1 { font-family: 'Playfair Display', serif; font-size: 4.5rem; color: #b71c1c; margin: 0; }
-        h2 { font-family: 'Playfair Display', serif; font-size: 3rem; color: #880e4f; }
-        p { font-size: 1.5rem; color: #333; max-width: 800px; line-height: 1.6; }
-
-        .img-box {
-            width: 400px; height: 300px;
-            border: 15px solid white;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            margin: 20px;
-            transform: rotate(-2deg);
-            overflow: hidden;
+        .content-card {
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 1.5s ease;
         }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Start Overlay */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); color: #b71c1c; margin: 0 0 15px 0; }
+        h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.5rem); color: #880e4f; margin: 0 0 15px 0; }
+        p { font-size: clamp(1rem, 2.5vw, 1.4rem); color: #333; max-width: 650px; line-height: 1.6; margin: 0 auto; }
+
+        /* Image Styling */
+        .img-container {
+            position: relative;
+            margin: 25px auto;
+            padding: 12px;
+            background: white;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-radius: 2px;
+            transform: rotate(-1deg);
+            max-width: 85%;
+        }
+
+        .img-container img {
+            display: block;
+            width: 100%;
+            max-height: 45vh;
+            object-fit: cover;
+            border: 1px solid #f0f0f0;
+        }
+
+        /* Overlay UI */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #b71c1c; color: white;
@@ -60,33 +88,56 @@
 
         .start-btn {
             background: white; color: #b71c1c;
-            padding: 20px 40px; font-size: 1.5rem; font-weight: bold;
+            padding: 18px 45px; font-size: 1.4rem; font-weight: bold;
             border: none; border-radius: 50px; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            font-family: 'Playfair Display', serif;
         }
-        .start-btn:hover { transform: scale(1.1); }
+        .start-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(0,0,0,0.3); }
 
-        /* Controls */
+        /* Enhanced Controller UI */
         #ui-bar {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 25px; border-radius: 40px;
-            display: none; gap: 20px; align-items: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            z-index: 1000;
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.98);
+            padding: 10px 25px; border-radius: 50px;
+            display: none; gap: 15px; align-items: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            z-index: 1000; border: 1px solid rgba(183, 28, 28, 0.1);
         }
+
+        .control-btn {
+            border: none; background: none; cursor: pointer;
+            font-size: 0.9rem; color: #b71c1c; font-family: inherit;
+            font-weight: 700; display: flex; align-items: center; gap: 6px;
+            padding: 8px 12px; border-radius: 20px; transition: 0.2s;
+        }
+        .control-btn:hover { background: #fff1f1; }
+
+        /* Music Menu */
+        #music-menu {
+            position: absolute; bottom: 70px; right: 0;
+            background: white; border-radius: 12px;
+            width: 250px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none; flex-direction: column; padding: 10px 0;
+            border: 1px solid #eee; overflow: hidden;
+        }
+        .music-item {
+            padding: 12px 20px; cursor: pointer; font-size: 0.85rem;
+            color: #444; transition: 0.2s; text-align: left;
+            border-bottom: 1px solid #f9f9f9;
+        }
+        .music-item:last-child { border-bottom: none; }
+        .music-item:hover { background: #fce4ec; color: #b71c1c; }
+        .music-item.active { background: #b71c1c; color: white; font-weight: bold; }
 
         #progress-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 8px;
-            background: rgba(255,255,255,0.3); z-index: 10000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 5px;
+            background: rgba(255,255,255,0.2); z-index: 10000;
         }
-        #progress-fill {
-            height: 100%; width: 0%; background: #ff4081;
-            transition: width 0.1s linear;
-        }
+        #progress-fill { height: 100%; width: 0%; background: #ff4081; }
 
-        #yt-player { position: absolute; top: -500px; left: -500px; opacity: 0; }
+        #yt-player { position: absolute; top: -1000px; left: -1000px; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -94,132 +145,182 @@
 <div id="progress-container"><div id="progress-fill"></div></div>
 
 <div id="overlay">
-    <i class="fa-solid fa-heart" style="font-size: 80px; margin-bottom: 20px;"></i>
-    <h1 style="color: white; margin-bottom: 40px;">Valentine 80's Special</h1>
-    <button class="start-btn" onclick="initExperience()">START CELEBRATION</button>
+    <i class="fa-solid fa-heart" style="font-size: 60px; margin-bottom: 25px; animation: pulse 2s infinite;"></i>
+    <h1 style="color: white; margin-bottom: 35px;">A Valentine's Soirée</h1>
+    <button class="start-btn" onclick="initExperience()">ENTER CELEBRATION</button>
 </div>
 
 <div id="ui-bar">
-    <button onclick="togglePause()" id="pause-btn" style="border:none; background:none; cursor:pointer; font-size: 1.2rem; color: #b71c1c;">
-        <i class="fa-solid fa-pause"></i> Pause
+    <button onclick="togglePause()" id="pause-btn" class="control-btn">
+        <i class="fa-solid fa-pause"></i> <span>Pause Slides</span>
     </button>
-    <div style="height: 20px; width: 1px; background: #ccc;"></div>
-    <div id="music-indicator" style="font-size: 0.9rem; color: #666;">Music Loading...</div>
+    <div style="height: 20px; width: 1px; background: #ddd;"></div>
+    <div style="position: relative;">
+        <button onclick="toggleMusicMenu()" class="control-btn">
+            <i class="fa-solid fa-compact-disc fa-spin"></i> <span id="current-track-name">Select Music</span>
+        </button>
+        <div id="music-menu">
+            <!-- Playlist items injected via JS -->
+        </div>
+    </div>
 </div>
 
 <div id="yt-player"></div>
 
 <div id="presentation-wrapper">
     <div class="slide-container slide-1">
-        <h1>Welcome</h1>
-        <p class="subtitle">To our Annual Valentine's Day Gala</p>
-        <div class="img-box" style="transform: rotate(2deg);">
-            <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800">
+        <div class="content-card">
+            <h1>Happy Valentine's Day</h1>
+            <p>Welcome to our 2026 Celebration. A night dedicated to the timeless power of love and music.</p>
+            <div class="img-container">
+                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200" alt="Flowers">
+            </div>
         </div>
     </div>
-
     <div class="slide-container slide-2">
-        <h2>Retro Romance</h2>
-        <p>Celebrating the music that defined a generation of love.</p>
-        <div style="display:flex; justify-content: center;">
-             <div class="img-box"><img src="https://images.unsplash.com/photo-1494972308805-463bc619d34e?q=80&w=800"></div>
+        <div class="content-card">
+            <h2>80's Retro Romance</h2>
+            <p>Tonight we journey back to the decade of neon hearts and classic love songs.</p>
+            <div class="img-container" style="transform: rotate(1deg);">
+                <img src="https://images.unsplash.com/photo-1494972308805-463bc619d34e?q=80&w=1200" alt="Cassette">
+            </div>
         </div>
     </div>
-
     <div class="slide-container slide-3">
-        <h2>To Our 20 Couples</h2>
-        <p>Your journey is the ultimate love song. Tonight is dedicated to you.</p>
-        <div class="img-box" style="width: 600px;"><img src="https://images.unsplash.com/photo-1516589174184-c6852657d48d?q=80&w=800"></div>
+        <div class="content-card">
+            <h2>To Our 20 Couples</h2>
+            <p>Each of your stories is a unique melody in our celebration. Thank you for being the heart of this event.</p>
+            <div class="img-container">
+                <img src="https://images.unsplash.com/photo-1516589174184-c6852657d48d?q=80&w=1200" alt="Hand holding">
+            </div>
+        </div>
     </div>
-
     <div class="slide-container slide-4">
-        <h1>Happy Valentine's</h1>
-        <p>Keep the flame burning bright.</p>
-        <i class="fa-solid fa-heart" style="font-size: 120px; color: #ff4081; margin-top: 20px;"></i>
+        <div class="content-card">
+            <h1>Always & Forever</h1>
+            <p>May your love continue to grow stronger with every passing melody.</p>
+            <i class="fa-solid fa-heart" style="font-size: 80px; color: #ff4081; margin-top: 30px;"></i>
+        </div>
     </div>
 </div>
 
 <script>
-    // Load YouTube API script
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    const playlist = [
+        { name: "Always - Atlantic Starr", id: "Q6RxomlRBZs" },
+        { name: "Careless Whisper - George Michael", id: "izGwDsrQ1eQ" },
+        { name: "Eternal Flame - The Bangles", id: "PSoOFn3wQV4" },
+        { name: "Take My Breath Away - Berlin", id: "Bx51eegLTY8" },
+        { name: "Time After Time - Cyndi Lauper", id: "VdQY7BusJNU" }
+    ];
 
     let player;
     let isPlaying = false;
     let currentSlide = 0;
     let progress = 0;
-    let duration = 8000; // 8 seconds
+    const duration = 12000; // 12 seconds per slide
     let paused = false;
     const totalSlides = 4;
-    const videoId = 'Q6RxomlRBZs'; // Modern English - I Melt With You
+
+    // Load YouTube API
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function onYouTubeIframeAPIReady() {
+        // Menu creation
+        const menu = document.getElementById('music-menu');
+        playlist.forEach((track, index) => {
+            const div = document.createElement('div');
+            div.className = 'music-item' + (index === 0 ? ' active' : '');
+            div.innerHTML = `<i class="fa-solid fa-music" style="margin-right: 8px"></i> ${track.name}`;
+            div.onclick = () => changeTrack(index);
+            menu.appendChild(div);
+        });
+        document.getElementById('current-track-name').innerText = playlist[0].name;
+    }
 
     function initExperience() {
-        // 1. Hide Overlay
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('ui-bar').style.display = 'flex';
         
-        // 2. Initialize YouTube Player (JIT)
         player = new YT.Player('yt-player', {
-            height: '1',
-            width: '1',
-            videoId: videoId,
-            playerVars: {
-                'autoplay': 1,
-                'controls': 0,
-                'loop': 1,
-                'playlist': videoId
-            },
+            height: '1', width: '1', videoId: playlist[0].id,
+            playerVars: { 'autoplay': 1, 'controls': 0, 'loop': 1, 'playlist': playlist[0].id },
             events: {
-                'onReady': (event) => {
-                    event.target.playVideo();
-                    document.getElementById('music-indicator').innerHTML = '<i class="fa-solid fa-music"></i> Music: Active';
-                },
-                'onStateChange': (event) => {
-                   if(event.data === YT.PlayerState.ENDED) { player.playVideo(); }
-                }
+                'onReady': (event) => event.target.playVideo()
             }
         });
 
-        // 3. Start Slideshow Loop
         isPlaying = true;
-        startLoops();
+        lastTick = Date.now();
+        requestAnimationFrame(slideLoop);
     }
 
-    function startLoops() {
-        // Update Progress Bar every 100ms
-        setInterval(() => {
-            if (paused || !isPlaying) return;
-            
-            progress += 100;
-            const percent = (progress / duration) * 100;
-            document.getElementById('progress-fill').style.width = percent + '%';
-
-            if (progress >= duration) {
-                nextSlide();
-            }
-        }, 100);
+    function changeTrack(index) {
+        if (!player) return;
+        player.loadVideoById(playlist[index].id);
+        
+        // Update UI
+        document.querySelectorAll('.music-item').forEach((el, i) => {
+            el.classList.toggle('active', i === index);
+        });
+        document.getElementById('current-track-name').innerText = playlist[index].name;
+        document.getElementById('music-menu').style.display = 'none';
     }
 
-    function nextSlide() {
-        progress = 0;
-        currentSlide = (currentSlide + 1) % totalSlides;
-        document.getElementById('presentation-wrapper').style.transform = `translateY(-${currentSlide * 100}vh)`;
+    function toggleMusicMenu() {
+        const menu = document.getElementById('music-menu');
+        menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    let lastTick = 0;
+    function slideLoop() {
+        if (!isPlaying || paused) {
+            lastTick = Date.now(); 
+            requestAnimationFrame(slideLoop);
+            return;
+        }
+
+        const now = Date.now();
+        const delta = now - lastTick;
+        lastTick = now;
+
+        progress += delta;
+        const percent = (progress / duration) * 100;
+        document.getElementById('progress-fill').style.width = Math.min(percent, 100) + '%';
+
+        if (progress >= duration) {
+            progress = 0;
+            currentSlide = (currentSlide + 1) % totalSlides;
+            document.getElementById('presentation-wrapper').style.transform = `translateY(-${currentSlide * 100}vh)`;
+        }
+
+        requestAnimationFrame(slideLoop);
     }
 
     function togglePause() {
         paused = !paused;
         const btn = document.getElementById('pause-btn');
-        if (paused) {
-            btn.innerHTML = '<i class="fa-solid fa-play"></i> Resume';
-            if(player && player.pauseVideo) player.pauseVideo();
-        } else {
-            btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
-            if(player && player.playVideo) player.playVideo();
+        btn.innerHTML = paused ? 
+            '<i class="fa-solid fa-play"></i> <span>Resume Slides</span>' : 
+            '<i class="fa-solid fa-pause"></i> <span>Pause Slides</span>';
+    }
+
+    // Close menu when clicking outside
+    window.onclick = function(event) {
+        if (!event.target.closest('#ui-bar')) {
+            document.getElementById('music-menu').style.display = 'none';
         }
     }
 </script>
+
+<style>
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.7; }
+    }
+</style>
 
 </body>
 </html>
