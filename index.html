@@ -17,7 +17,7 @@
             font-family: 'Lora', serif; 
         }
 
-        /* Presentation Engine - Centering Logic */
+        /* Presentation Engine */
         #presentation-wrapper { 
             width: 100%; height: 100%; 
             transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1); 
@@ -58,7 +58,6 @@
         h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.5rem); color: #880e4f; margin: 0 0 15px 0; }
         p { font-size: clamp(1rem, 2.5vw, 1.4rem); color: #333; max-width: 650px; line-height: 1.6; margin: 0 auto; }
 
-        /* Image Styling */
         .img-container {
             position: relative;
             margin: 25px auto;
@@ -96,40 +95,33 @@
         }
         .start-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(0,0,0,0.3); }
 
-        /* Enhanced Controller UI */
+        /* Unified Controller UI */
         #ui-bar {
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.98);
-            padding: 10px 25px; border-radius: 50px;
-            display: none; gap: 15px; align-items: center;
+            padding: 10px 20px; border-radius: 50px;
+            display: none; gap: 12px; align-items: center;
             box-shadow: 0 8px 32px rgba(0,0,0,0.15);
             z-index: 1000; border: 1px solid rgba(183, 28, 28, 0.1);
         }
 
+        .control-group { display: flex; align-items: center; gap: 8px; }
+        .divider { height: 24px; width: 1px; background: #e0e0e0; margin: 0 5px; }
+
         .control-btn {
             border: none; background: none; cursor: pointer;
-            font-size: 0.9rem; color: #b71c1c; font-family: inherit;
+            font-size: 0.85rem; color: #b71c1c; font-family: inherit;
             font-weight: 700; display: flex; align-items: center; gap: 6px;
-            padding: 8px 12px; border-radius: 20px; transition: 0.2s;
+            padding: 8px 14px; border-radius: 20px; transition: 0.2s;
+            white-space: nowrap;
         }
         .control-btn:hover { background: #fff1f1; }
+        .control-btn i { font-size: 1.1rem; }
 
-        /* Music Menu */
-        #music-menu {
-            position: absolute; bottom: 70px; right: 0;
-            background: white; border-radius: 12px;
-            width: 250px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            display: none; flex-direction: column; padding: 10px 0;
-            border: 1px solid #eee; overflow: hidden;
+        .music-info {
+            font-size: 0.75rem; color: #666; max-width: 150px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
-        .music-item {
-            padding: 12px 20px; cursor: pointer; font-size: 0.85rem;
-            color: #444; transition: 0.2s; text-align: left;
-            border-bottom: 1px solid #f9f9f9;
-        }
-        .music-item:last-child { border-bottom: none; }
-        .music-item:hover { background: #fce4ec; color: #b71c1c; }
-        .music-item.active { background: #b71c1c; color: white; font-weight: bold; }
 
         #progress-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 5px;
@@ -147,21 +139,29 @@
 <div id="overlay">
     <i class="fa-solid fa-heart" style="font-size: 60px; margin-bottom: 25px; animation: pulse 2s infinite;"></i>
     <h1 style="color: white; margin-bottom: 35px;">A Valentine's Soirée</h1>
+    <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px;">Click below to start the visual and musical journey</p>
     <button class="start-btn" onclick="initExperience()">ENTER CELEBRATION</button>
 </div>
 
 <div id="ui-bar">
-    <button onclick="togglePause()" id="pause-btn" class="control-btn">
-        <i class="fa-solid fa-pause"></i> <span>Pause Slides</span>
-    </button>
-    <div style="height: 20px; width: 1px; background: #ddd;"></div>
-    <div style="position: relative;">
-        <button onclick="toggleMusicMenu()" class="control-btn">
-            <i class="fa-solid fa-compact-disc fa-spin"></i> <span id="current-track-name">Select Music</span>
+    <!-- Slide Controls -->
+    <div class="control-group">
+        <button onclick="toggleSlidePause()" id="slide-pause-btn" class="control-btn">
+            <i class="fa-solid fa-pause"></i> <span>Slides</span>
         </button>
-        <div id="music-menu">
-            <!-- Playlist items injected via JS -->
-        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Music Controls -->
+    <div class="control-group">
+        <button onclick="toggleMusic()" id="music-play-btn" class="control-btn">
+            <i class="fa-solid fa-circle-pause"></i> <span>Music</span>
+        </button>
+        <button onclick="nextTrack()" class="control-btn" style="padding: 8px;">
+            <i class="fa-solid fa-forward-step"></i>
+        </button>
+        <div class="music-info" id="music-status">80s Love Hits...</div>
     </div>
 </div>
 
@@ -205,21 +205,15 @@
 </div>
 
 <script>
-    const playlist = [
-        { name: "Always - Atlantic Starr", id: "Q6RxomlRBZs" },
-        { name: "Careless Whisper - George Michael", id: "izGwDsrQ1eQ" },
-        { name: "Eternal Flame - The Bangles", id: "PSoOFn3wQV4" },
-        { name: "Take My Breath Away - Berlin", id: "Bx51eegLTY8" },
-        { name: "Time After Time - Cyndi Lauper", id: "VdQY7BusJNU" }
-    ];
-
     let player;
-    let isPlaying = false;
+    let isExperienceStarted = false;
     let currentSlide = 0;
     let progress = 0;
     const duration = 12000; // 12 seconds per slide
-    let paused = false;
+    let slidesPaused = false;
+    let musicPaused = false;
     const totalSlides = 4;
+    let lastTick = 0;
 
     // Load YouTube API
     var tag = document.createElement('script');
@@ -228,89 +222,103 @@
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     function onYouTubeIframeAPIReady() {
-        // Menu creation
-        const menu = document.getElementById('music-menu');
-        playlist.forEach((track, index) => {
-            const div = document.createElement('div');
-            div.className = 'music-item' + (index === 0 ? ' active' : '');
-            div.innerHTML = `<i class="fa-solid fa-music" style="margin-right: 8px"></i> ${track.name}`;
-            div.onclick = () => changeTrack(index);
-            menu.appendChild(div);
+        player = new YT.Player('yt-player', {
+            height: '1',
+            width: '1',
+            playerVars: {
+                'listType': 'playlist',
+                'list': 'RDS_E2EHVxNAE', // Extracting the list ID from your provided URL
+                'index': 0,
+                'autoplay': 0,
+                'controls': 0
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
         });
-        document.getElementById('current-track-name').innerText = playlist[0].name;
+    }
+
+    function onPlayerReady(event) {
+        // Ready but not playing until user clicks Start
+    }
+
+    function onPlayerStateChange(event) {
+        const status = document.getElementById('music-status');
+        if (event.data == YT.PlayerState.PLAYING) {
+            status.innerText = "Playing Radio...";
+            updateMusicUI(false);
+        } else if (event.data == YT.PlayerState.PAUSED) {
+            status.innerText = "Music Paused";
+            updateMusicUI(true);
+        }
     }
 
     function initExperience() {
+        isExperienceStarted = true;
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('ui-bar').style.display = 'flex';
         
-        player = new YT.Player('yt-player', {
-            height: '1', width: '1', videoId: playlist[0].id,
-            playerVars: { 'autoplay': 1, 'controls': 0, 'loop': 1, 'playlist': playlist[0].id },
-            events: {
-                'onReady': (event) => event.target.playVideo()
-            }
-        });
+        // Start Music
+        if (player && player.playVideo) {
+            player.playVideo();
+        }
 
-        isPlaying = true;
         lastTick = Date.now();
         requestAnimationFrame(slideLoop);
     }
 
-    function changeTrack(index) {
-        if (!player) return;
-        player.loadVideoById(playlist[index].id);
-        
-        // Update UI
-        document.querySelectorAll('.music-item').forEach((el, i) => {
-            el.classList.toggle('active', i === index);
-        });
-        document.getElementById('current-track-name').innerText = playlist[index].name;
-        document.getElementById('music-menu').style.display = 'none';
-    }
-
-    function toggleMusicMenu() {
-        const menu = document.getElementById('music-menu');
-        menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
-    }
-
-    let lastTick = 0;
     function slideLoop() {
-        if (!isPlaying || paused) {
-            lastTick = Date.now(); 
-            requestAnimationFrame(slideLoop);
-            return;
-        }
+        if (!isExperienceStarted) return;
 
         const now = Date.now();
         const delta = now - lastTick;
         lastTick = now;
 
-        progress += delta;
-        const percent = (progress / duration) * 100;
-        document.getElementById('progress-fill').style.width = Math.min(percent, 100) + '%';
+        if (!slidesPaused) {
+            progress += delta;
+            const percent = (progress / duration) * 100;
+            document.getElementById('progress-fill').style.width = Math.min(percent, 100) + '%';
 
-        if (progress >= duration) {
-            progress = 0;
-            currentSlide = (currentSlide + 1) % totalSlides;
-            document.getElementById('presentation-wrapper').style.transform = `translateY(-${currentSlide * 100}vh)`;
+            if (progress >= duration) {
+                progress = 0;
+                currentSlide = (currentSlide + 1) % totalSlides;
+                document.getElementById('presentation-wrapper').style.transform = `translateY(-${currentSlide * 100}vh)`;
+            }
         }
 
         requestAnimationFrame(slideLoop);
     }
 
-    function togglePause() {
-        paused = !paused;
-        const btn = document.getElementById('pause-btn');
-        btn.innerHTML = paused ? 
-            '<i class="fa-solid fa-play"></i> <span>Resume Slides</span>' : 
-            '<i class="fa-solid fa-pause"></i> <span>Pause Slides</span>';
+    // Controls Logic
+    function toggleSlidePause() {
+        slidesPaused = !slidesPaused;
+        const btn = document.getElementById('slide-pause-btn');
+        btn.innerHTML = slidesPaused ? 
+            '<i class="fa-solid fa-play"></i> <span>Slides</span>' : 
+            '<i class="fa-solid fa-pause"></i> <span>Slides</span>';
     }
 
-    // Close menu when clicking outside
-    window.onclick = function(event) {
-        if (!event.target.closest('#ui-bar')) {
-            document.getElementById('music-menu').style.display = 'none';
+    function toggleMusic() {
+        if (!player) return;
+        const state = player.getPlayerState();
+        if (state == YT.PlayerState.PLAYING) {
+            player.pauseVideo();
+        } else {
+            player.playVideo();
+        }
+    }
+
+    function updateMusicUI(isPaused) {
+        const btn = document.getElementById('music-play-btn');
+        btn.innerHTML = isPaused ? 
+            '<i class="fa-solid fa-circle-play"></i> <span>Music</span>' : 
+            '<i class="fa-solid fa-circle-pause"></i> <span>Music</span>';
+    }
+
+    function nextTrack() {
+        if (player && player.nextVideo) {
+            player.nextVideo();
         }
     }
 </script>
