@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>valentine</title>
+    <title>中西合璧浪漫情人節晚會</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
@@ -30,51 +30,57 @@
             justify-content: center; 
             align-items: center;     
             text-align: center;
-            padding: 40px;
+            padding: 20px;
         }
 
-        /* Backgrounds */
-        .slide-1 { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%); }
-        .slide-2 { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); }
-        .slide-3 { background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%); }
-        .slide-4 { background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%); }
+        /* Background Colors (Cycling) */
+        .bg-1 { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%); }
+        .bg-2 { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); }
+        .bg-3 { background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%); }
+        .bg-4 { background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%); }
 
         .content-card {
-            max-width: 800px;
+            max-width: 1000px;
             width: 100%;
+            height: 90vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 1.5s ease;
+            animation: fadeIn 1.2s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); color: #b71c1c; margin: 0 0 15px 0; }
-        h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.5rem); color: #880e4f; margin: 0 0 15px 0; }
-        p { font-size: clamp(1rem, 2.5vw, 1.4rem); color: #333; max-width: 650px; line-height: 1.6; margin: 0 auto; }
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 4rem); color: #b71c1c; margin: 0 0 10px 0; }
+        p { font-size: clamp(1rem, 2vw, 1.2rem); color: #333; max-width: 800px; line-height: 1.4; margin: 0 auto; }
 
+        /* Larger Image Container */
         .img-container {
             position: relative;
-            margin: 25px auto;
-            padding: 12px;
+            margin: 15px auto;
+            padding: 15px;
             background: white;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border-radius: 2px;
-            transform: rotate(-1deg);
-            max-width: 85%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            width: 90%;
+            max-width: 850px;
+            height: 65vh; /* Larger vertical space for photos */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
         .img-container img {
             display: block;
             width: 100%;
-            max-height: 45vh;
-            object-fit: cover;
-            border: 1px solid #f0f0f0;
+            height: 100%;
+            object-fit: contain; /* Ensures the whole photo is visible */
+            border: 1px solid #eee;
         }
 
         /* Overlay UI */
@@ -95,41 +101,34 @@
         }
         .start-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(0,0,0,0.3); }
 
-        /* Unified Controller UI */
+        /* UI Bar */
         #ui-bar {
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.98);
-            padding: 10px 20px; border-radius: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 20px; border-radius: 50px;
             display: none; gap: 12px; align-items: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
             z-index: 1000; border: 1px solid rgba(183, 28, 28, 0.1);
         }
 
-        .control-group { display: flex; align-items: center; gap: 8px; }
-        .divider { height: 24px; width: 1px; background: #e0e0e0; margin: 0 5px; }
+        .control-group { display: flex; align-items: center; gap: 5px; }
+        .divider { height: 20px; width: 1px; background: #ddd; margin: 0 5px; }
 
         .control-btn {
             border: none; background: none; cursor: pointer;
             font-size: 0.85rem; color: #b71c1c; font-family: inherit;
             font-weight: 700; display: flex; align-items: center; gap: 6px;
-            padding: 8px 14px; border-radius: 20px; transition: 0.2s;
-            white-space: nowrap;
+            padding: 8px 12px; border-radius: 20px; transition: 0.2s;
         }
         .control-btn:hover { background: #fff1f1; }
-        .control-btn i { font-size: 1.1rem; }
 
-        .music-info {
-            font-size: 0.75rem; color: #666; max-width: 150px;
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-        }
+        .music-label { font-size: 0.7rem; color: #666; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
 
         #progress-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 5px;
-            background: rgba(255,255,255,0.2); z-index: 10000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 4px;
+            background: rgba(255,255,255,0.1); z-index: 10000;
         }
-        #progress-fill { height: 100%; width: 0%; background: #ff4081; }
-
-        #yt-player { position: absolute; top: -1000px; left: -1000px; pointer-events: none; }
+        #progress-fill { height: 100%; width: 0%; background: #ff4081; transition: width 0.1s linear; }
     </style>
 </head>
 <body>
@@ -138,139 +137,109 @@
 
 <div id="overlay">
     <i class="fa-solid fa-heart" style="font-size: 60px; margin-bottom: 25px; animation: pulse 2s infinite;"></i>
-    <h1 style="color: white; margin-bottom: 35px;">中西合璧浪漫情人節晚會</h1>
-    <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px;">信望愛Agape夫婦小組</p>
-    <button class="start-btn" onclick="initExperience()">開始</button>
+    <h1 style="color: white; margin-bottom: 10px;">中西合璧浪漫情人節晚會</h1>
+    <p style="color: rgba(255,255,255,0.8); margin-bottom: 30px;">信望愛Agape夫婦小組</p>
+    <button class="start-btn" onclick="initExperience()">開始播放</button>
 </div>
+
+<!-- Native Audio Player (Hidden) -->
+<audio id="bg-music" loop>
+    <!-- REPLACE THIS URL WITH YOUR RAW GITHUB MP3 LINK -->
+    <source src="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/your_music_file.mp3" type="audio/mpeg">
+</audio>
 
 <div id="ui-bar">
-    <!-- Slide Controls -->
     <div class="control-group">
         <button onclick="toggleSlidePause()" id="slide-pause-btn" class="control-btn">
-            <i class="fa-solid fa-pause"></i> <span>Slides</span>
+            <i class="fa-solid fa-pause"></i> <span>幻燈片</span>
         </button>
     </div>
-
     <div class="divider"></div>
-
-    <!-- Music Controls -->
     <div class="control-group">
-        <button onclick="toggleMusic()" id="music-play-btn" class="control-btn">
-            <i class="fa-solid fa-circle-pause"></i> <span>Music</span>
+        <span class="music-label">音樂</span>
+        <button onclick="toggleMusic()" id="music-toggle-btn" class="control-btn">
+            <i class="fa-solid fa-circle-pause"></i>
         </button>
-        <button onclick="nextTrack()" class="control-btn" style="padding: 8px;">
-            <i class="fa-solid fa-forward-step"></i>
-        </button>
-        <div class="music-info" id="music-status">80s Love Hits...</div>
     </div>
 </div>
 
-<div id="yt-player"></div>
-
 <div id="presentation-wrapper">
-    <div class="slide-container slide-1">
-        <div class="content-card">
-            <h1>Leo & Linda</h1>
-            <p>Welcome to our 2026 Celebration. A night dedicated to the timeless power of love and music.</p>
-            <div class="img-container">
-                <img src="Leo&Linda.jpeg" alt="Flowers">
-            </div>
-        </div>
-    </div>
-    <div class="slide-container slide-2">
-        <div class="content-card">
-            <h2>Leo & Linda</h2>
-            <p>Tonight we journey back to the decade of neon hearts and classic love songs.</p>
-            <div class="img-container" style="transform: rotate(1deg);">
-                <img src="Leo&Linda.jpeg2.jpeg" alt="Cassette">
-            </div>
-        </div>
-    </div>
-    <div class="slide-container slide-3">
-        <div class="content-card">
-            <h2>To Our 20 Couples</h2>
-            <p>Each of your stories is a unique melody in our celebration. Thank you for being the heart of this event.</p>
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1516589174184-c6852657d48d?q=80&w=1200" alt="Hand holding">
-            </div>
-        </div>
-    </div>
-    <div class="slide-container slide-4">
-        <div class="content-card">
-            <h1>Always & Forever</h1>
-            <p>May your love continue to grow stronger with every passing melody.</p>
-            <i class="fa-solid fa-heart" style="font-size: 80px; color: #ff4081; margin-top: 30px;"></i>
-        </div>
-    </div>
+    <!-- Slides will be injected here by JavaScript -->
 </div>
 
 <script>
-    let player;
-    let isExperienceStarted = false;
+    // 1. CONFIGURE YOUR COUPLES HERE
+    // Just add/edit entries in this array. I've prepared 30 slots.
+    const couples = [
+        { name: "Leo & Linda", img: "Leo&Linda.jpeg", msg: "A night dedicated to the timeless power of love." },
+        { name: "Leo & Linda", img: "Leo&Linda.jpeg2.jpeg", msg: "Journeying together through the melody of life." },
+        { name: "Couple 3", img: "couple3.jpg", msg: "Love is the greatest gift of all." },
+        { name: "Couple 4", img: "couple4.jpg", msg: "Building a beautiful future together." },
+        { name: "Couple 5", img: "couple5.jpg", msg: "Forever and always." },
+        { name: "Couple 6", img: "couple6.jpg", msg: "Grace and Love." },
+        { name: "Couple 7", img: "couple7.jpg", msg: "Shared moments, lasting memories." },
+        { name: "Couple 8", img: "couple8.jpg", msg: "Strength in unity." },
+        { name: "Couple 9", img: "couple9.jpg", msg: "A blessing to each other." },
+        { name: "Couple 10", img: "couple10.jpg", msg: "Heart to heart." },
+        { name: "Couple 11", img: "couple11.jpg", msg: "Endless love." },
+        { name: "Couple 12", img: "couple12.jpg", msg: "Joy in every step." },
+        { name: "Couple 13", img: "couple13.jpg", msg: "Together in faith." },
+        { name: "Couple 14", img: "couple14.jpg", msg: "A beautiful journey." },
+        { name: "Couple 15", img: "couple15.jpg", msg: "True companionship." },
+        { name: "Couple 16", img: "couple16.jpg", msg: "Kindness and devotion." },
+        { name: "Couple 17", img: "couple17.jpg", msg: "Woven together by love." },
+        { name: "Couple 18", img: "couple18.jpg", msg: "Patient and kind." },
+        { name: "Couple 19", img: "couple19.jpg", msg: "Laughter and life." },
+        { name: "Couple 20", img: "couple20.jpg", msg: "The heart of our group." },
+        { name: "Couple 21", img: "couple21.jpg", msg: "Devoted hearts." },
+        { name: "Couple 22", img: "couple22.jpg", msg: "Purest affection." },
+        { name: "Couple 23", img: "couple23.jpg", msg: "Hand in hand." },
+        { name: "Couple 24", img: "couple24.jpg", msg: "Radiant love." },
+        { name: "Couple 25", img: "couple25.jpg", msg: "Walking in light." },
+        { name: "Couple 26", img: "couple26.jpg", msg: "Soulmates forever." },
+        { name: "Couple 27", img: "couple27.jpg", msg: "Deeply connected." },
+        { name: "Couple 28", img: "couple28.jpg", msg: "Boundless joy." },
+        { name: "Couple 29", img: "couple29.jpg", msg: "Treasured bond." },
+        { name: "Couple 30", img: "couple30.jpg", msg: "Always and Forever." }
+    ];
+
     let currentSlide = 0;
     let progress = 0;
-    const duration = 12000; // 12 seconds per slide
+    const duration = 10000; // 10 seconds per slide
     let slidesPaused = false;
-    let musicPaused = false;
-    const totalSlides = 4;
     let lastTick = 0;
+    const audio = document.getElementById('bg-music');
 
-    // Load YouTube API
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('yt-player', {
-            height: '1',
-            width: '1',
-            playerVars: {
-                'listType': 'playlist',
-                'list': 'dpqBlhTFjc4&list=PLbheNVuTUDXt4yMnFZXZBAk_AjAf8w8CX', // Extracting the list ID from your provided URL
-                'index': 0,
-                'autoplay': 0,
-                'controls': 0
-            },
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
-    }
-
-    function onPlayerReady(event) {
-        // Ready but not playing until user clicks Start
-    }
-
-    function onPlayerStateChange(event) {
-        const status = document.getElementById('music-status');
-        if (event.data == YT.PlayerState.PLAYING) {
-            status.innerText = "Playing Radio...";
-            updateMusicUI(false);
-        } else if (event.data == YT.PlayerState.PAUSED) {
-            status.innerText = "Music Paused";
-            updateMusicUI(true);
-        }
-    }
+    // Generate Slides Dynamically
+    const wrapper = document.getElementById('presentation-wrapper');
+    couples.forEach((couple, index) => {
+        const bgNum = (index % 4) + 1;
+        const slide = document.createElement('div');
+        slide.className = `slide-container bg-${bgNum}`;
+        slide.innerHTML = `
+            <div class="content-card">
+                <h1>${couple.name}</h1>
+                <p>${couple.msg}</p>
+                <div class="img-container">
+                    <img src="${couple.img}" alt="${couple.name}" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800&auto=format&fit=crop'">
+                </div>
+            </div>
+        `;
+        wrapper.appendChild(slide);
+    });
 
     function initExperience() {
-        isExperienceStarted = true;
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('ui-bar').style.display = 'flex';
         
         // Start Music
-        if (player && player.playVideo) {
-            player.playVideo();
-        }
-
+        audio.play().catch(e => console.log("Audio play blocked: ", e));
+        
         lastTick = Date.now();
         requestAnimationFrame(slideLoop);
     }
 
     function slideLoop() {
-        if (!isExperienceStarted) return;
-
         const now = Date.now();
         const delta = now - lastTick;
         lastTick = now;
@@ -282,43 +251,31 @@
 
             if (progress >= duration) {
                 progress = 0;
-                currentSlide = (currentSlide + 1) % totalSlides;
-                document.getElementById('presentation-wrapper').style.transform = `translateY(-${currentSlide * 100}vh)`;
+                // Infinite Loop: % couples.length ensures it goes back to 0 at the end
+                currentSlide = (currentSlide + 1) % couples.length;
+                wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
             }
         }
 
         requestAnimationFrame(slideLoop);
     }
 
-    // Controls Logic
     function toggleSlidePause() {
         slidesPaused = !slidesPaused;
         const btn = document.getElementById('slide-pause-btn');
         btn.innerHTML = slidesPaused ? 
-            '<i class="fa-solid fa-play"></i> <span>Slides</span>' : 
-            '<i class="fa-solid fa-pause"></i> <span>Slides</span>';
+            '<i class="fa-solid fa-play"></i> <span>幻燈片</span>' : 
+            '<i class="fa-solid fa-pause"></i> <span>幻燈片</span>';
     }
 
     function toggleMusic() {
-        if (!player) return;
-        const state = player.getPlayerState();
-        if (state == YT.PlayerState.PLAYING) {
-            player.pauseVideo();
+        const btn = document.getElementById('music-toggle-btn');
+        if (audio.paused) {
+            audio.play();
+            btn.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
         } else {
-            player.playVideo();
-        }
-    }
-
-    function updateMusicUI(isPaused) {
-        const btn = document.getElementById('music-play-btn');
-        btn.innerHTML = isPaused ? 
-            '<i class="fa-solid fa-circle-play"></i> <span>Music</span>' : 
-            '<i class="fa-solid fa-circle-pause"></i> <span>Music</span>';
-    }
-
-    function nextTrack() {
-        if (player && player.nextVideo) {
-            player.nextVideo();
+            audio.pause();
+            btn.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
         }
     }
 </script>
@@ -332,8 +289,3 @@
 
 </body>
 </html>
-
-
-
-
-
