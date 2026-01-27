@@ -33,7 +33,7 @@
             padding: 20px;
         }
 
-        /* Background Colors (Cycling) */
+        /* Background Colors */
         .bg-1 { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%); }
         .bg-2 { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); }
         .bg-3 { background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%); }
@@ -58,7 +58,6 @@
         h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 4rem); color: #b71c1c; margin: 0 0 10px 0; }
         p { font-size: clamp(1rem, 2vw, 1.2rem); color: #333; max-width: 800px; line-height: 1.4; margin: 0 auto; }
 
-        /* Larger Image Container */
         .img-container {
             position: relative;
             margin: 15px auto;
@@ -68,7 +67,7 @@
             border-radius: 4px;
             width: 90%;
             max-width: 850px;
-            height: 65vh; /* Larger vertical space for photos */
+            height: 65vh; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -79,7 +78,7 @@
             display: block;
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Ensures the whole photo is visible */
+            object-fit: contain; 
             border: 1px solid #eee;
         }
 
@@ -106,29 +105,50 @@
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.95);
             padding: 8px 20px; border-radius: 50px;
-            display: none; gap: 12px; align-items: center;
+            display: none; gap: 15px; align-items: center;
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
             z-index: 1000; border: 1px solid rgba(183, 28, 28, 0.1);
+            max-width: 95vw;
         }
 
-        .control-group { display: flex; align-items: center; gap: 5px; }
-        .divider { height: 20px; width: 1px; background: #ddd; margin: 0 5px; }
+        .control-group { display: flex; align-items: center; gap: 8px; }
+        .divider { height: 25px; width: 1px; background: #ddd; }
 
         .control-btn {
             border: none; background: none; cursor: pointer;
-            font-size: 0.85rem; color: #b71c1c; font-family: inherit;
+            font-size: 0.9rem; color: #b71c1c; font-family: inherit;
             font-weight: 700; display: flex; align-items: center; gap: 6px;
             padding: 8px 12px; border-radius: 20px; transition: 0.2s;
+            white-space: nowrap;
         }
         .control-btn:hover { background: #fff1f1; }
+        
+        /* Dropdown Styling */
+        .slide-selector {
+            background: #fff;
+            border: 1px solid #ddd;
+            color: #b71c1c;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            max-width: 150px;
+        }
 
-        .music-label { font-size: 0.7rem; color: #666; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        #track-info { font-size: 0.7rem; color: #b71c1c; font-weight: bold; text-align: center; white-space: nowrap; }
 
         #progress-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 4px;
             background: rgba(255,255,255,0.1); z-index: 10000;
         }
         #progress-fill { height: 100%; width: 0%; background: #ff4081; transition: width 0.1s linear; }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+        }
     </style>
 </head>
 <body>
@@ -142,36 +162,43 @@
     <button class="start-btn" onclick="initExperience()">開始播放</button>
 </div>
 
-<!-- Native Audio Player (Hidden) -->
-<audio id="bg-music" loop>
-    <!-- REPLACE THIS URL WITH YOUR RAW GITHUB MP3 LINK -->
-    <source src="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/your_music_file.mp3" type="audio/mpeg">
-</audio>
+<audio id="bg-music"></audio>
 
 <div id="ui-bar">
     <div class="control-group">
         <button onclick="toggleSlidePause()" id="slide-pause-btn" class="control-btn">
-            <i class="fa-solid fa-pause"></i> <span>相片</span>
+            <i class="fa-solid fa-pause"></i>
         </button>
+        <select id="slide-jump" class="slide-selector" onchange="jumpToSlide(this.value)">
+            <!-- Options populated via JS -->
+        </select>
     </div>
+    
     <div class="divider"></div>
+    
     <div class="control-group">
-        <span class="music-label">音樂</span>
         <button onclick="toggleMusic()" id="music-toggle-btn" class="control-btn">
             <i class="fa-solid fa-circle-pause"></i>
         </button>
+        <div id="track-info">Track 1</div>
+        <button onclick="playNextTrack()" class="control-btn">
+            <i class="fa-solid fa-forward-step"></i>
+        </button>
     </div>
 </div>
 
-<div id="presentation-wrapper">
-    <!-- Slides will be injected here by JavaScript -->
-</div>
+<div id="presentation-wrapper"></div>
 
 <script>
-    // 1. CONFIGURE YOUR COUPLES HERE
-    // Just add/edit entries in this array. I've prepared 30 slots.
+    const musicPlaylist = [
+        "right-here-waiting-richard-marx.mp3",
+        "my_heart_will_go_on.mp3",
+        "music-file-3.mp3"
+    ];
+    let currentTrackIndex = 0;
+
     const couples = [
-        { name: "山哥&Candy", img: "山哥&Candy.jpeg", msg: "A night dedicated to the timeless power of love." },
+               { name: "山哥&Candy", img: "山哥&Candy.jpeg", msg: "A night dedicated to the timeless power of love." },
         { name: "Sum&Nancy", img: "Sum&Nancy.jpeg", msg: "Journeying together through the melody of life." },
         { name: "Fred&Helen", img: "Fred&Helen.jpg", msg: "Love is the greatest gift of all." },
         { name: "Rachel&Francis", img: "Rachel&Francis", msg: "Building a beautiful future together." },
@@ -205,13 +232,14 @@
 
     let currentSlide = 0;
     let progress = 0;
-    const duration = 10000; // 10 seconds per slide
+    const duration = 10000; 
     let slidesPaused = false;
     let lastTick = 0;
     const audio = document.getElementById('bg-music');
-
-    // Generate Slides Dynamically
     const wrapper = document.getElementById('presentation-wrapper');
+    const slideJump = document.getElementById('slide-jump');
+
+    // Initialize slides and Dropdown
     couples.forEach((couple, index) => {
         const bgNum = (index % 4) + 1;
         const slide = document.createElement('div');
@@ -226,15 +254,45 @@
             </div>
         `;
         wrapper.appendChild(slide);
+
+        // Add option to dropdown
+        const opt = document.createElement('option');
+        opt.value = index;
+        opt.innerText = couple.name;
+        slideJump.appendChild(opt);
     });
+
+    function loadTrack(index) {
+        audio.src = musicPlaylist[index];
+        audio.load();
+        document.getElementById('track-info').innerText = `Track ${index + 1}/${musicPlaylist.length}`;
+    }
+
+    function playNextTrack() {
+        currentTrackIndex = (currentTrackIndex + 1) % musicPlaylist.length;
+        loadTrack(currentTrackIndex);
+        audio.play().catch(e => console.log("Playback error:", e));
+        updateMusicBtnUI();
+    }
+
+    audio.onended = playNextTrack;
+
+    function jumpToSlide(index) {
+        currentSlide = parseInt(index);
+        progress = 0; // Reset progress bar for the selected slide
+        updateSlidePosition();
+    }
+
+    function updateSlidePosition() {
+        wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
+        slideJump.value = currentSlide; // Sync dropdown if it changed automatically
+    }
 
     function initExperience() {
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('ui-bar').style.display = 'flex';
-        
-        // Start Music
-        audio.play().catch(e => console.log("Audio play blocked: ", e));
-        
+        loadTrack(currentTrackIndex);
+        audio.play().catch(e => console.log("Audio play blocked"));
         lastTick = Date.now();
         requestAnimationFrame(slideLoop);
     }
@@ -251,42 +309,28 @@
 
             if (progress >= duration) {
                 progress = 0;
-                // Infinite Loop: % couples.length ensures it goes back to 0 at the end
                 currentSlide = (currentSlide + 1) % couples.length;
-                wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
+                updateSlidePosition();
             }
         }
-
         requestAnimationFrame(slideLoop);
     }
 
     function toggleSlidePause() {
         slidesPaused = !slidesPaused;
         const btn = document.getElementById('slide-pause-btn');
-        btn.innerHTML = slidesPaused ? 
-            '<i class="fa-solid fa-play"></i> <span>幻燈片</span>' : 
-            '<i class="fa-solid fa-pause"></i> <span>幻燈片</span>';
+        btn.innerHTML = slidesPaused ? '<i class="fa-solid fa-play"></i>' : '<i class="fa-solid fa-pause"></i>';
+    }
+
+    function updateMusicBtnUI() {
+        const btn = document.getElementById('music-toggle-btn');
+        btn.innerHTML = audio.paused ? '<i class="fa-solid fa-circle-play"></i>' : '<i class="fa-solid fa-circle-pause"></i>';
     }
 
     function toggleMusic() {
-        const btn = document.getElementById('music-toggle-btn');
-        if (audio.paused) {
-            audio.play();
-            btn.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
-        } else {
-            audio.pause();
-            btn.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
-        }
+        if (audio.paused) audio.play(); else audio.pause();
+        updateMusicBtnUI();
     }
 </script>
-
-<style>
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.1); opacity: 0.7; }
-    }
-</style>
-
 </body>
 </html>
-
