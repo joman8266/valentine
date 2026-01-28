@@ -154,6 +154,13 @@
             text-shadow: 0 2px 20px rgba(255,255,255,0.9);
         }
 
+        .group-subtitle {
+            font-size: clamp(1.5rem, 3.2vw, 2.16rem);
+            color: #b71c1c;
+            letter-spacing: 0.2em;
+            font-weight: bold;
+        }
+
         .start-btn {
             background: #e53935;
             color: white;
@@ -215,7 +222,7 @@
 
 <div id="overlay">
     <div class="static-title">中西合璧浪漫情人節晚會</div>
-    <div style="font-size: 1.2rem; color: #b71c1c; letter-spacing: 0.3em; font-weight: bold;">信望愛AGAPE夫婦小組</div>
+    <div class="group-subtitle">信望愛 Agape 夫婦小組</div>
     <button class="start-btn" id="start-btn">開始</button>
 </div>
 
@@ -232,11 +239,11 @@
 
 <script>
     const musicPlaylist = [
+        "All_Out_of_Love.mp3",
+        "Nothing_s_Gonna_Change_My_Love_For_You.mp3",
         "right-here-waiting-richard-marx.mp3",
         "my_heart_will_go_on.mp3",
-        "All_Out_of_Love.mp3",
-        "Ocean_Deep.mp3",
-        "Nothing_s_Gonna_Change_My_Love_For_You.mp3"
+        "Ocean_Deep.mp3"
     ];
 
     const couples = [
@@ -311,7 +318,6 @@
     const slideJump = document.getElementById('slide-jump');
 
     function createSlides() {
-        // Couple Slides
         couples.forEach((c, i) => {
             const slide = document.createElement('div');
             slide.className = 'slide-container';
@@ -334,7 +340,6 @@
             slideJump.appendChild(opt);
         });
 
-        // Event Slides - Changed to raw photo flow (no grid/no frame)
         eventPages.forEach((e, i) => {
             const index = couples.length + i;
             const slide = document.createElement('div');
