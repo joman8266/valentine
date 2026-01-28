@@ -145,7 +145,7 @@
             margin-top: 10px;
         }
 
-        /* Hanging Hearts Banner - ADJUSTED */
+        /* Hanging Hearts Banner */
         .hanging-hearts-banner {
             position: absolute;
             top: -10px;
@@ -174,8 +174,9 @@
 
         .hanging-heart i {
             color: var(--heart-color, #e53935);
-            font-size: 42px; /* Bigger */
-            filter: drop-shadow(0 0 12px rgba(255, 64, 129, 0.6)); /* Glow */
+            font-size: 44px;
+            /* High intensity glow */
+            filter: drop-shadow(0 0 12px rgba(255, 64, 129, 0.6));
             animation: shimmer 2s infinite alternate ease-in-out;
         }
 
@@ -185,8 +186,14 @@
         }
 
         @keyframes shimmer {
-            0% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.4)); transform: scale(1); }
-            100% { filter: drop-shadow(0 0 20px rgba(255, 192, 203, 0.9)) brightness(1.2); transform: scale(1.1); }
+            0% { 
+                filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4)) brightness(1);
+                transform: scale(1); 
+            }
+            100% { 
+                filter: drop-shadow(0 0 25px rgba(255, 255, 255, 1)) brightness(1.3); 
+                transform: scale(1.15); 
+            }
         }
 
         /* UI Styling */
@@ -421,7 +428,7 @@
             const idx = couples.length + i;
             const slide = document.createElement('div');
             slide.className = 'slide-container';
-            slide.style.backgroundImage = "url('festive.jpeg";
+            slide.style.backgroundImage = "url('festive_background.webp')";
             slide.innerHTML = generateSlideHTML(e, false);
             addFloatingElements(slide, 'fa-circle', ['#2196f3', '#ff80ab', '#ffeb3b', '#d4af37'], true);
             wrapper.appendChild(slide);
@@ -454,22 +461,25 @@
 
     function createHangingBanner() {
         const banner = document.getElementById('heart-banner');
-        // Sparkly high-contrast palette
-        const colors = ['#ff0055', '#ff80ab', '#ff4081', '#fce4ec'];
-        const count = 10; // Reduced as requested
+        // Rich vibrant colors, removed light pink/white tones
+        const colors = ['#e91e63', '#ff1744', '#d50000', '#c2185b', '#f44336'];
+        const count = 10;
         for (let i = 0; i < count; i++) {
             const container = document.createElement('div');
             container.className = 'hanging-heart';
-            const stringLen = Math.floor(Math.random() * 70) + 40; // Slightly longer for bigger hearts
+            const stringLen = Math.floor(Math.random() * 70) + 40;
             container.style.setProperty('--string-len', stringLen + 'px');
             container.style.animationDelay = (Math.random() * 2) + 's';
-            container.style.setProperty('--heart-color', colors[Math.floor(Math.random() * colors.length)]);
+            
+            // Assign deep colors to all hearts to prevent "pale" appearance
+            container.style.setProperty('--heart-color', colors[i % colors.length]);
+            
             const string = document.createElement('div');
             string.className = 'string';
             const heart = document.createElement('i');
             heart.className = 'fa-solid fa-heart';
-            // Each heart gets a slightly different shimmer speed
             heart.style.animationDuration = (2 + Math.random()) + 's';
+            
             container.appendChild(string);
             container.appendChild(heart);
             banner.appendChild(container);
