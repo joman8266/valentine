@@ -13,7 +13,7 @@
         * { box-sizing: border-box; }
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            overflow: hidden; background-color: #000; 
+            overflow: hidden; background-color: #fff5f7; 
             font-family: 'Lora', serif; 
         }
 
@@ -31,17 +31,15 @@
             align-items: center;     
             text-align: center;
             overflow: hidden;
-            /* Heart Background with high transparency overlay */
-            background-image: linear-gradient(rgba(255, 245, 247, 0.85), rgba(255, 245, 247, 0.85)), url('background.avif');
-            background-size: cover;
-            background-position: center;
+            /* SLIDE BACKGROUND: Change the gradient or image for the couple slides here */
+            background: linear-gradient(135deg, #fff5f7 0%, #ffebee 100%);
         }
 
-        /* Content Card Animation */
+        /* Content Card */
         .content-card {
             position: relative;
             z-index: 10;
-            max-width: 95%;
+            max-width: 90%;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -58,44 +56,21 @@
 
         h1 { 
             font-family: 'Playfair Display', serif; 
-            font-size: clamp(2.2rem, 6vw, 4rem); 
+            font-size: clamp(2.5rem, 7vw, 4.5rem); 
             color: #831010; 
-            margin: 0 0 25px 0;
+            margin: 0 0 30px 0;
             font-style: italic;
             z-index: 20;
             letter-spacing: -1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        /* Fancy Gold Frame */
-        .fancy-frame {
-            position: relative;
-            padding: 12px;
-            background: linear-gradient(45deg, #d4af37, #f9f295, #d4af37, #b8860b, #d4af37);
-            background-size: 400% 400%;
-            animation: goldShimmer 8s linear infinite;
-            border-radius: 4px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2), 0 0 15px rgba(212, 175, 55, 0.2);
-            display: inline-block;
-        }
-
-        @keyframes goldShimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .inner-border {
-            border: 1px solid rgba(255,255,255,0.5);
-            padding: 4px;
-            border-radius: 2px;
+        /* Photo container */
+        .photo-wrapper {
             background: white;
-        }
-
-        .img-container {
-            display: block;
-            overflow: hidden;
-            position: relative;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: inline-block;
         }
 
         .img-container img {
@@ -105,82 +80,115 @@
             width: auto;
             height: auto;
             object-fit: contain;
-            transition: transform 10s ease;
+            border-radius: 4px;
         }
 
         /* Floating Hearts Animation */
-        .decoration { position: absolute; pointer-events: none; z-index: 1; }
         .floating-heart {
             color: #ff80ab;
             position: absolute;
             animation: floatHeart 7s infinite ease-in-out;
             opacity: 0;
+            z-index: 1;
         }
 
         @keyframes floatHeart {
             0% { transform: translateY(20vh) rotate(0deg) scale(0.5); opacity: 0; }
-            20% { opacity: 0.5; }
-            80% { opacity: 0.5; }
+            20% { opacity: 0.3; }
+            80% { opacity: 0.3; }
             100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
         }
 
-        /* UI Overlays */
+        /* --- OPENING SCREEN (OVERLAY) STYLING --- */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #b71c1c 0%, #7f0000 100%);
-            color: white; display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 9999; text-align: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: white;
+
+            /* EDIT OPENING BACKGROUND HERE:
+               - To use a solid color: background: #7f0000;
+               - To use an image: background: url('YOUR_IMAGE_URL_HERE') center/cover no-repeat;
+            */
+            background: radial-gradient(circle, #b71c1c 0%, #7f0000 100%);
         }
 
         .start-btn {
-            background: #d4af37; color: #3d0000;
-            padding: 18px 50px; font-size: 1.3rem; font-weight: bold;
-            border: none; border-radius: 50px; cursor: pointer;
+            background: #d4af37; /* Button Color (Gold) */
+            color: #3d0000;      /* Button Text Color */
+            padding: 18px 50px; 
+            font-size: 1.3rem; 
+            font-weight: bold;
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            transition: all 0.3s; font-family: 'Playfair Display', serif;
-            text-transform: uppercase; letter-spacing: 2px;
+            transition: all 0.3s; 
+            font-family: 'Playfair Display', serif;
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+        }
+        
+        .start-btn:hover {
+            transform: scale(1.05);
+            background: #f1c40f;
         }
 
+        /* Bottom-Right Controller */
         #ui-bar {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
-            padding: 10px 20px; border-radius: 50px;
-            display: none; gap: 15px; align-items: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            z-index: 1000; border: 1px solid rgba(212, 175, 55, 0.3);
+            position: fixed; bottom: 24px; right: 24px;  
+            background: rgba(255, 255, 255, 0.9); 
+            backdrop-filter: blur(10px);
+            padding: 8px 16px; border-radius: 40px; 
+            display: none; gap: 12px; align-items: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            z-index: 1000; border: 1px solid rgba(0,0,0,0.05);
+            opacity: 0.15; transition: opacity 0.4s ease;
         }
+        #ui-bar:hover { opacity: 1; }
 
-        .control-btn { border: none; background: none; cursor: pointer; color: #831010; font-size: 1rem; }
-        .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; outline: none; cursor: pointer; }
-
-        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(0,0,0,0.05); z-index: 10000; }
-        #progress-fill { height: 100%; width: 0%; background: #d4af37; transition: width 0.1s linear; }
+        .control-btn { border: none; background: none; cursor: pointer; color: #831010; font-size: 0.85rem; padding: 4px; }
+        .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; outline: none; cursor: pointer; font-size: 0.75rem; }
+        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(0,0,0,0.03); z-index: 10000; }
+        #progress-fill { height: 100%; width: 0%; background: #ff80ab; transition: width 0.1s linear; }
     </style>
 </head>
 <body>
 
 <div id="progress-container"><div id="progress-fill"></div></div>
 
+<!-- START OF OPENING SCREEN -->
 <div id="overlay">
+    <!-- You can change or remove this icon -->
     <i class="fa-solid fa-heart" style="font-size: 50px; color: #d4af37; margin-bottom: 20px;"></i>
+    
+    <!-- Main Title on Opening Screen -->
     <h1 style="color: white; margin-bottom: 10px; font-style: normal;">中西合璧浪漫情人節晚會</h1>
+    
+    <!-- Subtitle -->
     <p style="color: #fce4ec; margin-bottom: 40px; font-size: 1.2rem;">信望愛Agape夫婦小組</p>
-    <button class="start-btn" onclick="initExperience()">Enter Romantic Evening</button>
+    
+    <!-- EDIT START BUTTON WORDS HERE -->
+    <button class="start-btn" onclick="initExperience()">
+        Click to Begin
+    </button>
 </div>
+<!-- END OF OPENING SCREEN -->
 
-<audio id="bg-music"></audio>
+<audio id="bg-music" loop></audio>
 
 <div id="ui-bar">
-    <button onclick="toggleSlidePause()" id="slide-pause-btn" class="control-btn"><i class="fa-solid fa-pause"></i></button>
+    <button onclick="toggleSlidePause()" id="slide-pause-btn" class="control-btn" title="Pause Slides"><i class="fa-solid fa-pause"></i></button>
     <select id="slide-jump" class="slide-selector" onchange="jumpToSlide(this.value)"></select>
-    <div style="width:1px; height:20px; background:rgba(0,0,0,0.1)"></div>
-    <button onclick="toggleMusic()" id="music-toggle-btn" class="control-btn"><i class="fa-solid fa-volume-high"></i></button>
-    <button onclick="playNextTrack()" class="control-btn"><i class="fa-solid fa-forward"></i></button>
+    <div style="width:1px; height:16px; background:rgba(0,0,0,0.1)"></div>
+    <button onclick="toggleMusic()" id="music-toggle-btn" class="control-btn" title="Pause Music"><i class="fa-solid fa-volume-high"></i></button>
+    <button onclick="playNextTrack()" class="control-btn" title="Next Song"><i class="fa-solid fa-forward"></i></button>
 </div>
 
 <div id="presentation-wrapper"></div>
 
 <script>
+    // Music Files - ensure these are in the same folder as this file
     const musicPlaylist = [
         "right-here-waiting-richard-marx.mp3",
         "my_heart_will_go_on.mp3",
@@ -189,6 +197,7 @@
         "Nothing_s_Gonna_Change_My_Love_For_You.mp3"
     ];
 
+    // Couple Data
     const couples = [
         { name: "山哥 & Candy", img: "山哥&Candy.jpeg" },
         { name: "Sum & Nancy", img: "Sum&Nancy.jpeg" },
@@ -219,41 +228,37 @@
 
     let currentSlide = 0;
     let progress = 0;
-    const duration = 8000; 
+    const duration = 8000; // Slide duration (8 seconds)
     let slidesPaused = false;
     let lastTick = 0;
     const audio = document.getElementById('bg-music');
     const wrapper = document.getElementById('presentation-wrapper');
     const slideJump = document.getElementById('slide-jump');
 
-    function createHearts(slide) {
-        for (let i = 0; i < 10; i++) {
-            const heart = document.createElement('i');
-            heart.className = 'fa-solid fa-heart floating-heart decoration';
-            heart.style.left = Math.random() * 95 + 'vw';
-            heart.style.bottom = '-10%';
-            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
-            heart.style.animationDelay = (Math.random() * 7) + 's';
-            slide.appendChild(heart);
-        }
-    }
-
+    // Generate slides
     couples.forEach((couple, index) => {
         const slide = document.createElement('div');
         slide.className = `slide-container`;
         slide.innerHTML = `
             <div class="content-card">
                 <h1>${couple.name}</h1>
-                <div class="fancy-frame">
-                    <div class="inner-border">
-                        <div class="img-container">
-                            <img src="${couple.img}" alt="${couple.name}" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800&auto=format&fit=crop'">
-                        </div>
+                <div class="photo-wrapper">
+                    <div class="img-container">
+                        <img src="${couple.img}" alt="${couple.name}" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800&auto=format&fit=crop'">
                     </div>
                 </div>
             </div>
         `;
-        createHearts(slide);
+        // Add animated hearts to background
+        for (let i = 0; i < 6; i++) {
+            const heart = document.createElement('i');
+            heart.className = 'fa-solid fa-heart floating-heart';
+            heart.style.left = Math.random() * 95 + 'vw';
+            heart.style.bottom = '-10%';
+            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            heart.style.animationDelay = (Math.random() * 7) + 's';
+            slide.appendChild(heart);
+        }
         wrapper.appendChild(slide);
 
         const opt = document.createElement('option');
@@ -266,7 +271,7 @@
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('ui-bar').style.display = 'flex';
         audio.src = musicPlaylist[0];
-        audio.play().catch(e => console.log("Audio blocked"));
+        audio.play().catch(e => console.log("Audio blocked by browser"));
         lastTick = Date.now();
         requestAnimationFrame(slideLoop);
     }
@@ -296,13 +301,22 @@
     }
 
     function toggleMusic() {
-        if (audio.paused) audio.play(); else audio.pause();
+        if (audio.paused) {
+            audio.play();
+            document.getElementById('music-toggle-btn').innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+        } else {
+            audio.pause();
+            document.getElementById('music-toggle-btn').innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+        }
     }
 
     function playNextTrack() {
-        const next = (musicPlaylist.indexOf(audio.src.split('/').pop()) + 1) % musicPlaylist.length;
+        let currentTrack = audio.src.split('/').pop();
+        let currentIndex = musicPlaylist.indexOf(currentTrack);
+        const next = (currentIndex + 1) % musicPlaylist.length;
         audio.src = musicPlaylist[next];
         audio.play();
+        document.getElementById('music-toggle-btn').innerHTML = '<i class="fa-solid fa-volume-high"></i>';
     }
 
     function jumpToSlide(index) {
