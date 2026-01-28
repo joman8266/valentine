@@ -20,8 +20,8 @@
         /* Presentation Engine */
         #presentation-wrapper { 
             width: 100%; height: 100%; 
-            /* Smoother bezier for transitions */
             transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1); 
+            display: none; /* Hidden until start */
         }
 
         .slide-container { 
@@ -35,7 +35,7 @@
             background-color: #fff5f7;
         }
 
-        /* --- BACKGROUND ADJUSTMENTS --- */
+        /* Floral background for slides */
         .slide-container::before {
             content: "";
             position: absolute;
@@ -45,11 +45,6 @@
             background-position: center;
             opacity: 1.0; 
             z-index: 1;
-        }
-
-        .slide-container.first-slide::before {
-            background-image: url('heart_background.jpg');
-            opacity: 0.1; 
         }
 
         /* Content Card */
@@ -83,15 +78,15 @@
 
         .couple-message {
             font-family: 'Lora', serif;
-            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            font-size: clamp(1.21rem, 2.75vw, 1.65rem);
             color: #b71c1c;
             margin-top: 25px;
-            max-width: 700px;
+            max-width: 800px;
             font-style: italic;
-            line-height: 1.4;
+            line-height: 1.5;
             z-index: 20;
             background: rgba(255, 255, 255, 0.45);
-            padding: 12px 24px;
+            padding: 15px 30px;
             border-radius: 20px;
         }
 
@@ -114,7 +109,6 @@
             border-radius: 4px;
         }
 
-        /* 1. Doubled the size of the floating heart (from 10-25px to 20-50px) */
         .floating-heart {
             color: #ff80ab;
             position: absolute;
@@ -130,28 +124,47 @@
             100% { transform: translateY(-110vh) rotate(360deg) scale(1.4); opacity: 0; }
         }
 
+        /* Landing Page Styling */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999; text-align: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             color: white;
-            background: radial-gradient(circle, #b71c1c 0%, #7f0000 100%);
+            background-image: url('heart_background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        #overlay::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Darker overlay for better contrast */
+            z-index: -1;
         }
 
         .start-btn {
-            background: #d4af37;
-            color: #3d0000;
+            background: #e53935; /* Red Button */
+            color: #ffffff;
             padding: 18px 50px; 
             font-size: 1.3rem; 
             font-weight: bold;
             border: none; 
             border-radius: 50px; 
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 30px rgba(229, 57, 53, 0.4);
             transition: all 0.3s; 
             font-family: 'Playfair Display', serif;
             text-transform: uppercase; 
             letter-spacing: 2px;
+            position: relative;
+            z-index: 10000;
+        }
+        
+        .start-btn:hover {
+            background: #c62828;
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(229, 57, 53, 0.6);
         }
 
         #ui-bar {
@@ -167,7 +180,7 @@
 
         .control-btn { border: none; background: none; cursor: pointer; color: #831010; font-size: 0.85rem; padding: 4px; }
         .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; outline: none; cursor: pointer; font-size: 0.75rem; }
-        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(0,0,0,0.03); z-index: 10000; }
+        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(0,0,0,0.03); z-index: 10000; display: none; }
         #progress-fill { height: 100%; width: 0%; background: #ff80ab; transition: width 0.1s linear; }
     </style>
 </head>
@@ -176,9 +189,9 @@
 <div id="progress-container"><div id="progress-fill"></div></div>
 
 <div id="overlay">
-    <i class="fa-solid fa-heart" style="font-size: 50px; color: #d4af37; margin-bottom: 20px;"></i>
-    <h1 style="color: white; margin-bottom: 10px; font-style: normal;">中西合璧浪漫情人節晚會</h1>
-    <p style="color: #fce4ec; margin-bottom: 40px; font-size: 1.2rem;">信望愛Agape夫婦小組</p>
+    <i class="fa-solid fa-heart" style="font-size: 60px; color: #e53935; margin-bottom: 25px; filter: drop-shadow(0 0 10px rgba(229,57,53,0.5));"></i>
+    <h1 style="color: white; margin-bottom: 10px; font-style: normal; text-shadow: 0 4px 8px rgba(0,0,0,0.3);">中西合璧浪漫情人節晚會</h1>
+    <p style="color: #fce4ec; margin-bottom: 40px; font-size: 2.2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">信望愛 Agape 夫婦小組</p>
     <button class="start-btn" onclick="initExperience()">Enter Celebration</button>
 </div>
 
@@ -198,13 +211,14 @@
     const musicPlaylist = [
         "right-here-waiting-richard-marx.mp3",
         "my_heart_will_go_on.mp3",
+        "Everything_I_Do_It_For_You.mp3",
         "All_Out_of_Love.mp3",
         "Ocean_Deep.mp3",
         "Nothing_s_Gonna_Change_My_Love_For_You.mp3"
     ];
 
     const couples = [
-        { name: "山哥&Candy", img: "山哥&Candy.jpeg", msg: "A night dedicated to the timeless power of love." },
+       	{ name: "山哥&Candy", img: "山哥&Candy.jpeg", msg: "A night dedicated to the timeless power of love." },
         { name: "Sum&Nancy", img: "Sum&Nancy.jpeg", msg: "Journeying together through the melody of life." },
         { name: "Fred&Helen", img: "Fred&Helen.jpeg", msg: "Love is the greatest gift of all." },
         { name: "Francis&Rachel", img: "Francis&Rachel.jpeg", msg: "Building a beautiful future together." },
@@ -234,6 +248,7 @@
         { name: "Couple 28", img: "couple28.jpeg", msg: "Boundless joy." },
         { name: "Couple 29", img: "couple29.jpeg", msg: "Treasured bond." },
         { name: "Couple 30", img: "couple30.jpeg", msg: "Always and Forever." }
+
     ];
 
     let currentSlide = 0;
@@ -247,9 +262,14 @@
     const wrapper = document.getElementById('presentation-wrapper');
     const slideJump = document.getElementById('slide-jump');
 
+    audio.addEventListener('ended', () => {
+        playNextTrack();
+    });
+
+    // Initialize slides
     couples.forEach((couple, index) => {
         const slide = document.createElement('div');
-        slide.className = `slide-container ${index === 0 ? 'first-slide' : ''}`;
+        slide.className = 'slide-container';
         slide.innerHTML = `
             <div class="content-card">
                 <h1>${couple.name}</h1>
@@ -261,13 +281,11 @@
                 <div class="couple-message">${couple.msg || ""}</div>
             </div>
         `;
-        // Floating hearts with doubled size
         for (let i = 0; i < 6; i++) {
             const heart = document.createElement('i');
             heart.className = 'fa-solid fa-heart floating-heart';
             heart.style.left = Math.random() * 95 + 'vw';
             heart.style.bottom = '-10%';
-            // Doubled font size range from previous version
             heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
             heart.style.animationDelay = (Math.random() * 7) + 's';
             slide.appendChild(heart);
@@ -276,15 +294,19 @@
 
         const opt = document.createElement('option');
         opt.value = index;
-        opt.innerText = couple.name;
+        opt.innerText = (index + 1) + ". " + couple.name;
         slideJump.appendChild(opt);
     });
 
     function initExperience() {
         document.getElementById('overlay').style.display = 'none';
+        document.getElementById('presentation-wrapper').style.display = 'block';
+        document.getElementById('progress-container').style.display = 'block';
         document.getElementById('ui-bar').style.display = 'flex';
+        
         loadTrack(0);
         audio.play().catch(e => console.log("Audio play blocked"));
+        
         lastTick = Date.now();
         requestAnimationFrame(slideLoop);
     }
@@ -293,6 +315,7 @@
         const now = Date.now();
         const delta = now - lastTick;
         lastTick = now;
+
         if (!slidesPaused) {
             progress += delta;
             const percent = (progress / duration) * 100;
@@ -302,12 +325,10 @@
                 progress = 0;
                 let nextSlide = (currentSlide + 1) % couples.length;
                 
-                // 2. Logic for seamless loop (instantly jump back to top)
                 if (nextSlide === 0) {
-                    wrapper.style.transition = 'none'; // Disable animation
+                    wrapper.style.transition = 'none';
                     currentSlide = 0;
                     wrapper.style.transform = `translateY(0vh)`;
-                    // Force reflow
                     wrapper.offsetHeight; 
                     wrapper.style.transition = 'transform 1.2s cubic-bezier(0.65, 0, 0.35, 1)';
                 } else {
@@ -335,7 +356,7 @@
     function playNextTrack() {
         currentTrackIndex = (currentTrackIndex + 1) % musicPlaylist.length;
         loadTrack(currentTrackIndex);
-        audio.play();
+        audio.play().catch(e => console.log("Play failed", e));
         updateMusicUI();
     }
 
