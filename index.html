@@ -220,11 +220,12 @@
 
 <div id="overlay">
     <div class="static-title">中西合璧浪漫情人節晚會</div>
-    <div style="font-size: 1.2rem; color: #b71c1c; letter-spacing: 0.3em; font-weight: bold;">信望愛AGAPE夫婦小組</div>
+    <div style="font-size: 1.2rem; color: #b71c1c; letter-spacing: 0.3em; font-weight: bold;">信望愛 Agape 夫婦小組</div>
     <button class="start-btn" id="start-btn">開始</button>
 </div>
 
-<audio id="bg-music" loop></audio>
+<!-- Removed loop to allow manual/auto progression to next track -->
+<audio id="bg-music"></audio>
 
 <div id="ui-bar">
     <button onclick="toggleSlidePause()" id="slide-pause-btn" class="control-btn"><i class="fa-solid fa-pause"></i></button>
@@ -237,9 +238,9 @@
 
 <script>
     const musicPlaylist = [
+        "All_Out_of_Love.mp3",
         "right-here-waiting-richard-marx.mp3",
         "my_heart_will_go_on.mp3",
-        "All_Out_of_Love.mp3",
         "Ocean_Deep.mp3",
         "Nothing_s_Gonna_Change_My_Love_For_You.mp3"
     ];
@@ -273,7 +274,7 @@
     ];
 
     const eventPages = [
-        { title: "晚會花絮 1", imgs: ["p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg"], msg: "精彩瞬間" },
+        { title: "晚會花絮 1", imgs: ["1.jpg", "2.jpg", "3.jpg", "4.jpg"], msg: "精彩瞬間" },
         { title: "晚會花絮 2", imgs: ["p5.jpg", "p6.jpg", "p7.jpg", "p8.jpg"], msg: "溫馨時刻" },
         { title: "晚會花絮 3", imgs: ["p9.jpg", "p10.jpg", "p11.jpg", "p12.jpg"], msg: "喜樂滿溢" },
         { title: "晚會花絮 4", imgs: ["a.jpg", "b.jpg", "c.jpg", "d.jpg"], msg: "精彩重溫" },
@@ -339,7 +340,7 @@
             slideJump.appendChild(opt);
         });
 
-        // Event Slides - UPDATED BACKGROUND
+        // Event Slides
         eventPages.forEach((e, i) => {
             const index = couples.length + i;
             const slide = document.createElement('div');
@@ -368,13 +369,12 @@
     }
 
     function addHearts(parent) {
-        // Add 5 hearts per couple slide
         for (let i = 0; i < 5; i++) {
             const heart = document.createElement('i');
             heart.className = 'fa-solid fa-heart floating-heart';
             heart.style.left = Math.random() * 90 + 'vw';
             heart.style.bottom = '-10%';
-            heart.style.fontSize = (Math.random() * 25 + 25) + 'px'; // Size range doubled
+            heart.style.fontSize = (Math.random() * 25 + 25) + 'px';
             heart.style.animationDelay = (Math.random() * 5) + 's';
             parent.appendChild(heart);
         }
@@ -436,6 +436,9 @@
         audio.src = musicPlaylist[(currentIndex + 1) % musicPlaylist.length];
         audio.play();
     }
+
+    // Listener to automatically play next song in list
+    audio.addEventListener('ended', playNextTrack);
 
     createSlides();
     document.getElementById('start-btn').addEventListener('click', init);
