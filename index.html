@@ -35,19 +35,16 @@
             background-color: #fff5f7;
         }
 
-        /* Floral background for slides */
         .slide-container::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('floral_background.png');
-            background-size: cover;
-            background-position: center;
-            opacity: 1.0; 
+            background-image: radial-gradient(#fce4ec 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
             z-index: 1;
         }
 
-        /* Content Card */
         .content-card {
             position: relative;
             z-index: 10;
@@ -85,7 +82,7 @@
             font-style: italic;
             line-height: 1.5;
             z-index: 20;
-            background: rgba(255, 255, 255, 0.45);
+            background: rgba(255, 255, 255, 0.6);
             padding: 15px 30px;
             border-radius: 20px;
             backdrop-filter: blur(5px);
@@ -110,7 +107,6 @@
             border-radius: 4px;
         }
 
-        /* Floating Hearts */
         .floating-heart {
             color: #ff80ab;
             position: absolute;
@@ -132,17 +128,6 @@
             z-index: 9999; text-align: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             background: linear-gradient(135deg, #fff5f7 0%, #fce4ec 100%);
-        }
-
-        #overlay::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('heart_background.jpg');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.1;
-            z-index: -1;
         }
 
         .static-title {
@@ -175,6 +160,7 @@
             text-transform: uppercase; 
             letter-spacing: 3px;
             margin-top: 50px;
+            z-index: 10001;
         }
 
         .start-btn:hover {
@@ -200,7 +186,7 @@
             padding: 8px 16px; border-radius: 40px; 
             display: none; gap: 12px; align-items: center;
             box-shadow: 0 8px 32px rgba(0,0,0,0.05);
-            z-index: 1000; opacity: 0.15; transition: opacity 0.4s ease;
+            z-index: 1000; opacity: 0.2; transition: opacity 0.4s ease;
         }
         #ui-bar:hover { opacity: 1; }
 
@@ -218,17 +204,17 @@
     <i class="fa-solid fa-heart" style="font-size: 60px; color: #e53935; margin-bottom: 25px;"></i>
     <div class="static-title">中西合璧浪漫情人節晚會</div>
     <div class="subtitle">信望愛AGAPE夫婦小組</div>
-    <button class="start-btn" onclick="initExperience()">Enter Celebration</button>
+    <button class="start-btn" id="start-btn">Enter Celebration</button>
 </div>
 
-<audio id="bg-music"></audio>
+<audio id="bg-music" loop></audio>
 
 <div id="ui-bar">
-    <button onclick="toggleSlidePause()" id="slide-pause-btn" class="control-btn" title="暫停輪播"><i class="fa-solid fa-pause"></i></button>
+    <button onclick="toggleSlidePause()" id="slide-pause-btn" class="control-btn" title="Pause Slides"><i class="fa-solid fa-pause"></i></button>
     <select id="slide-jump" class="slide-selector" onchange="jumpToSlide(this.value)"></select>
     <div style="width:1px; height:16px; background:rgba(0,0,0,0.1)"></div>
-    <button onclick="toggleMusic()" id="music-toggle-btn" class="control-btn" title="播放/暫停音樂"><i class="fa-solid fa-volume-high"></i></button>
-    <button onclick="playNextTrack()" class="control-btn" title="下一首"><i class="fa-solid fa-forward"></i></button>
+    <button onclick="toggleMusic()" id="music-toggle-btn" class="control-btn" title="Toggle Music"><i class="fa-solid fa-volume-high"></i></button>
+    <button onclick="playNextTrack()" class="control-btn" title="Next Track"><i class="fa-solid fa-forward"></i></button>
 </div>
 
 <div id="presentation-wrapper"></div>
@@ -243,7 +229,7 @@
     ];
 
     const couples = [
-        	{ name: "山哥 & Candy", img: "山哥&Candy.jpeg", msg: "A night dedicated to the timeless power of love." },
+        { name: "山哥 & Candy", img: "山哥&Candy.jpeg", msg: "A night dedicated to the timeless power of love." },
         { name: "Sum & Nancy", img: "Sum&Nancy.jpeg", msg: "Journeying together through the melody of life." },
         { name: "Fred & Helen", img: "Fred&Helen.jpeg", msg: "Love is the greatest gift of all." },
         { name: "Francis & Rachel", img: "Francis&Rachel.jpeg", msg: "Building a beautiful future together." },
@@ -267,18 +253,12 @@
         { name: "Nick & Dakki", img: "couple22.jpeg", msg: "Purest affection." },
         { name: "龍牧師 & 龍師母", img: "龍牧師&龍師母.jpeg", msg: "Hand in hand." },
         { name: "Benny & Vivian", img: "Benny&Vivian.jpeg", msg: "Radiant love." },
-        { name: "Leo & Linda", img: "Leo&Linda.jpeg", msg: “Always and Forever.” },
+        { name: "Leo & Linda", img: "Leo&Linda.jpeg", msg: "Always and Forever." },
         { name: "Couple 26", img: "couple26.jpeg", msg: "Soulmates forever." },
         { name: "Couple 27", img: "couple27.jpeg", msg: "Deeply connected." },
         { name: "Couple 28", img: "couple28.jpeg", msg: "Boundless joy." },
         { name: "Couple 29", img: "couple29.jpeg", msg: "Treasured bond." },
-        { name: "Couple 30", img: "couple30.jpeg", msg: "Walking in light" },
-        // 50 additional placeholder slides
-        ...Array.from({ length: 50 }, (_, i) => ({
-            name: `Couple ${i + 26}`,
-            img: `couple${i + 26}.jpeg`,
-            msg: "愛是恆久忍耐，又有恩慈。"
-        }))
+        { name: "Couple 30", img: "couple30.jpeg", msg: "Walking in light" }
     ];
 
     let currentSlide = 0;
@@ -292,8 +272,7 @@
     const wrapper = document.getElementById('presentation-wrapper');
     const slideJump = document.getElementById('slide-jump');
 
-    audio.addEventListener('ended', () => playNextTrack());
-
+    // Create Slides
     couples.forEach((couple, index) => {
         const slide = document.createElement('div');
         slide.className = 'slide-container';
@@ -308,6 +287,7 @@
                 <div class="couple-message">${couple.msg}</div>
             </div>
         `;
+        // Add decorative floating hearts
         for (let i = 0; i < 6; i++) {
             const heart = document.createElement('i');
             heart.className = 'fa-solid fa-heart floating-heart';
@@ -327,14 +307,18 @@
 
     function initExperience() {
         document.getElementById('overlay').style.display = 'none';
-        document.getElementById('presentation-wrapper').style.display = 'block';
+        wrapper.style.display = 'block';
         document.getElementById('progress-container').style.display = 'block';
         document.getElementById('ui-bar').style.display = 'flex';
+        
         loadTrack(0);
-        audio.play().catch(e => console.log("Audio play blocked"));
+        audio.play().catch(e => console.log("Audio play needs manual kickstart"));
+        
         lastTick = Date.now();
         requestAnimationFrame(slideLoop);
     }
+
+    document.getElementById('start-btn').addEventListener('click', initExperience);
 
     function slideLoop() {
         const now = Date.now();
@@ -348,17 +332,8 @@
             
             if (progress >= duration) {
                 progress = 0;
-                let nextSlide = (currentSlide + 1) % couples.length;
-                if (nextSlide === 0) {
-                    wrapper.style.transition = 'none';
-                    currentSlide = 0;
-                    wrapper.style.transform = `translateY(0vh)`;
-                    wrapper.offsetHeight;
-                    wrapper.style.transition = 'transform 1.2s cubic-bezier(0.65, 0, 0.35, 1)';
-                } else {
-                    currentSlide = nextSlide;
-                    wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
-                }
+                currentSlide = (currentSlide + 1) % couples.length;
+                wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
                 slideJump.value = currentSlide;
             }
         }
@@ -373,18 +348,17 @@
     function loadTrack(index) {
         currentTrackIndex = index;
         audio.src = musicPlaylist[currentTrackIndex];
-        audio.load();
+    }
+
+    function toggleMusic() {
+        if (audio.paused) audio.play(); else audio.pause();
+        updateMusicUI();
     }
 
     function playNextTrack() {
         currentTrackIndex = (currentTrackIndex + 1) % musicPlaylist.length;
         loadTrack(currentTrackIndex);
-        audio.play().catch(e => console.log("Play failed", e));
-        updateMusicUI();
-    }
-
-    function toggleMusic() {
-        if (audio.paused) audio.play(); else audio.pause();
+        audio.play();
         updateMusicUI();
     }
 
@@ -398,6 +372,8 @@
         progress = 0;
         wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
     }
+
+    audio.addEventListener('ended', playNextTrack);
 </script>
 </body>
 </html>
