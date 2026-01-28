@@ -41,7 +41,7 @@
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 245, 247, 0.1);
+            background: rgba(255, 245, 247, 0.05);
             z-index: 1;
         }
 
@@ -54,8 +54,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 10px;
+            padding: 20px;
             animation: fadeIn 1.5s ease;
+        }
+
+        /* Event Specific Adjustments */
+        .event-card {
+            justify-content: flex-start;
+            padding-top: 25px;
         }
 
         @keyframes fadeIn {
@@ -65,14 +71,51 @@
 
         h1 { 
             font-family: 'Playfair Display', serif; 
-            font-size: clamp(2rem, 4vw, 3.2rem); 
+            font-size: clamp(1.8rem, 4vw, 2.8rem); 
             color: #831010; 
-            margin: 5px 0 10px 0;
+            margin: 0 0 5px 0; 
             font-style: italic;
             z-index: 20;
             text-shadow: 0 2px 10px rgba(255,255,255,0.8);
         }
 
+        /* Flexible Photo Layout for Events */
+        .flex-photo-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 12px; 
+            width: 95%;
+            max-width: 1600px;
+            z-index: 20;
+            margin-top: 0px; 
+            flex-grow: 0;
+        }
+
+        .flex-photo-item {
+            padding: 0; 
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+            flex: 1 1 45%; 
+            max-width: 48%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .flex-photo-item img {
+            max-width: 100%;
+            max-height: 34vh; 
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Couple Page Layout */
         .photo-wrapper {
             background: white;
             padding: 12px;
@@ -85,50 +128,26 @@
         .img-container img {
             display: block;
             max-width: 100%;
-            max-height: 60vh;
+            max-height: 55vh;
             width: auto;
             height: auto;
             object-fit: contain;
             border-radius: 4px;
         }
 
-        .grid-wrapper {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px; 
-            width: 95%; 
-            max-width: 1400px;
-            z-index: 20;
-        }
-
-        .grid-item {
-            background: white;
-            padding: 4px; 
-            border-radius: 6px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            overflow: hidden;
-        }
-
-        .grid-item img {
-            width: 100%;
-            height: 35vh; 
-            object-fit: cover;
-            border-radius: 2px;
-            display: block;
-        }
-
         .message-box {
             font-family: 'Lora', serif;
-            font-size: clamp(1rem, 2vw, 1.3rem);
+            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
             color: #b71c1c;
-            margin-top: 15px;
+            margin-top: 15px; 
+            margin-bottom: 10px;
             max-width: 800px;
             font-style: italic;
             font-weight: 700;
-            line-height: 1.4;
+            line-height: 1.2;
             z-index: 20;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 8px 25px;
+            background: rgba(255, 255, 255, 0.75);
+            padding: 8px 24px;
             border-radius: 30px;
             backdrop-filter: blur(8px);
         }
@@ -145,13 +164,12 @@
             overflow: hidden;
         }
 
-        /* REFINED DROPPING HEART HEADER */
         .header-decoration {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 250px; /* Increased height to accommodate longer strings */
+            height: 250px;
             pointer-events: none;
         }
 
@@ -177,15 +195,28 @@
         }
 
         .hanging-heart i {
-            color: #ffc1cc; 
-            font-size: 2rem; /* Increased heart size (20% bigger than 1.6rem) */
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+            color: #ff4081;
+            font-size: 2rem; 
+            filter: drop-shadow(0 0 8px rgba(255, 64, 129, 0.6));
             margin-top: -2px;
+            animation: sparkle 2s infinite ease-in-out;
         }
 
         @keyframes sway {
             0%, 100% { transform: rotate(-4deg); }
             50% { transform: rotate(4deg); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { 
+                filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.1)) drop-shadow(0 0 8px rgba(255, 64, 129, 0.6));
+                transform: scale(1);
+            }
+            50% { 
+                filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 20px rgba(255, 64, 129, 0.8));
+                transform: scale(1.1);
+                color: #ff80ab;
+            }
         }
 
         .static-title {
@@ -229,25 +260,25 @@
         .start-btn:hover { transform: scale(1.05); }
 
         #ui-bar {
-            position: fixed; bottom: 24px; right: 24px; 
-            background: rgba(255, 255, 255, 0.4); 
-            backdrop-filter: blur(4px);
-            padding: 10px 20px; border-radius: 40px; 
-            display: none; gap: 15px; align-items: center;
+            position: fixed; bottom: 20px; right: 20px; 
+            background: rgba(255, 255, 255, 0.45); 
+            backdrop-filter: blur(6px);
+            padding: 8px 16px; border-radius: 40px; 
+            display: none; gap: 12px; align-items: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             z-index: 1000;
             transition: all 0.3s ease;
-            opacity: 0.7;
+            opacity: 0.6;
         }
         #ui-bar:hover {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             opacity: 1;
         }
-        .control-btn { border: none; background: none; cursor: pointer; color: #831010; font-size: 1.1rem; }
-        .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; cursor: pointer; font-size: 0.9rem; max-width: 150px; }
+        .control-btn { border: none; background: none; cursor: pointer; color: #831010; font-size: 1rem; }
+        .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; cursor: pointer; font-size: 0.85rem; max-width: 140px; }
         
-        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 5px; background: rgba(0,0,0,0.05); z-index: 10000; display: none; }
+        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(0,0,0,0.05); z-index: 10000; display: none; }
         #progress-fill { height: 100%; width: 0%; background: #ff4081; }
 
         .floating-heart {
@@ -269,7 +300,6 @@
 <div id="progress-container"><div id="progress-fill"></div></div>
 
 <div id="overlay">
-    <!-- Clean Dropping Hearts Decoration - Updated with ~20% longer strings -->
     <div class="header-decoration">
         <div class="dropping-hearts">
             <div class="hanging-heart" style="animation-delay: 0s"><div class="string" style="height: 50px"></div><i class="fa-solid fa-heart"></i></div>
@@ -300,13 +330,11 @@
 
 <script>
     const musicPlaylist = [
-        "All_Out_of_Love.mp3",
-        "Nothing_s_Gonna_Change_My_Love_For_You.mp3",
-        "Everything_I_Do_It_For_You.mp3",
         "right-here-waiting-richard-marx.mp3",
         "my_heart_will_go_on.mp3",
-        "Ocean_Deep.mp3"
-        
+        "All_Out_of_Love.mp3",
+        "Ocean_Deep.mp3",
+        "Nothing_s_Gonna_Change_My_Love_For_You.mp3"
     ];
 
     const couples = [
@@ -338,11 +366,26 @@
     ];
 
     const eventPages = [
-        { title: "晚會花絮 1", imgs: ["p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg"], msg: "精彩瞬間" },
-        { title: "晚會花絮 2", imgs: ["p5.jpg", "p6.jpg", "p7.jpg", "p8.jpg"], msg: "溫馨時刻" },
-        { title: "晚會花絮 3", imgs: ["p9.jpg", "p10.jpg", "p11.jpg", "p12.jpg"], msg: "喜樂滿溢" },
-        { title: "晚會花絮 4", imgs: ["a.jpg", "b.jpg", "c.jpg", "d.jpg"], msg: "精彩重溫" },
-        { title: "晚會花絮 5", imgs: ["e.jpg", "f.jpg", "g.jpg", "h.jpg"], msg: "美好回憶" }
+        { title: "晚會精彩花絮 1", imgs: ["p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg"], msg: "珍貴時刻，永恆回憶" },
+        { title: "晚會精彩花絮 2", imgs: ["p5.jpg", "p6.jpg", "p7.jpg", "p8.jpg"], msg: "共聚一堂，分享喜悅" },
+        { title: "晚會精彩花絮 3", imgs: ["p9.jpg", "p10.jpg", "p11.jpg", "p12.jpg"], msg: "" },
+        { title: "晚會精彩花絮 4", imgs: ["p13.jpg", "p14.jpg", "p15.jpg", "p16.jpg"], msg: "" },
+        { title: "晚會精彩花絮 5", imgs: ["p17.jpg", "p18.jpg", "p19.jpg", "p20.jpg"], msg: "" },
+        { title: "晚會精彩花絮 6", imgs: ["p21.jpg", "p22.jpg", "p23.jpg", "p24.jpg"], msg: "" },
+        { title: "晚會精彩花絮 7", imgs: ["p25.jpg", "p26.jpg", "p27.jpg", "p28.jpg"], msg: "" },
+        { title: "晚會精彩花絮 8", imgs: ["p29.jpg", "p30.jpg", "p31.jpg", "p32.jpg"], msg: "" },
+        { title: "晚會精彩花絮 9", imgs: ["p33.jpg", "p34.jpg", "p35.jpg", "p36.jpg"], msg: "" },
+        { title: "晚會精彩花絮 10", imgs: ["p37.jpg", "p38.jpg", "p39.jpg", "p40.jpg"], msg: "" },
+        { title: "晚會精彩花絮 11", imgs: ["p41.jpg", "p42.jpg", "p43.jpg", "p44.jpg"], msg: "" },
+        { title: "晚會精彩花絮 12", imgs: ["p45.jpg", "p46.jpg", "p47.jpg", "p48.jpg"], msg: "" },
+        { title: "晚會精彩花絮 13", imgs: ["p49.jpg", "p50.jpg", "p51.jpg", "p52.jpg"], msg: "" },
+        { title: "晚會精彩花絮 14", imgs: ["p53.jpg", "p54.jpg", "p55.jpg", "p56.jpg"], msg: "" },
+        { title: "晚會精彩花絮 15", imgs: ["p57.jpg", "p58.jpg", "p59.jpg", "p60.jpg"], msg: "" },
+        { title: "晚會精彩花絮 16", imgs: ["p61.jpg", "p62.jpg", "p63.jpg", "p64.jpg"], msg: "" },
+        { title: "晚會精彩花絮 17", imgs: ["p65.jpg", "p66.jpg", "p67.jpg", "p68.jpg"], msg: "" },
+        { title: "晚會精彩花絮 18", imgs: ["p69.jpg", "p70.jpg", "p71.jpg", "p72.jpg"], msg: "" },
+        { title: "晚會精彩花絮 19", imgs: ["p73.jpg", "p74.jpg", "p75.jpg", "p76.jpg"], msg: "" },
+        { title: "晚會精彩花絮 20", imgs: ["p77.jpg", "p78.jpg", "p79.jpg", "p80.jpg"], msg: "" }
     ];
 
     let currentSlide = 0;
@@ -384,12 +427,12 @@
             slide.className = 'slide-container';
             slide.style.backgroundImage = "url('festive_background.webp')";
             slide.innerHTML = `
-                <div class="content-card">
+                <div class="content-card event-card">
                     <h1>${e.title}</h1>
-                    <div class="grid-wrapper">
+                    <div class="flex-photo-container">
                         ${e.imgs.map(img => `
-                            <div class="grid-item">
-                                <img src="${img}" onerror="this.src='https://placehold.co/400x300?text=Event+Photo'">
+                            <div class="flex-photo-item">
+                                <img src="${img}" onerror="this.src='https://placehold.co/500x350?text=Event+Photo'">
                             </div>
                         `).join('')}
                     </div>
@@ -425,7 +468,8 @@
         if (!slidesPaused) {
             progress += delta;
             const percent = (progress / duration) * 100;
-            document.getElementById('progress-fill').style.width = Math.min(percent, 100) + '%';
+            const fill = document.getElementById('progress-fill');
+            if(fill) fill.style.width = Math.min(percent, 100) + '%';
             
             if (progress >= duration) {
                 progress = 0;
