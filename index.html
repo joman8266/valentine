@@ -31,8 +31,19 @@
             align-items: center;     
             text-align: center;
             overflow: hidden;
-            /* SLIDE BACKGROUND: Change the gradient or image for the couple slides here */
-            background: linear-gradient(135deg, #fff5f7 0%, #ffebee 100%);
+            background-color: #fff5f7; /* Base color behind the image */
+        }
+
+        /* NEW: Floral Background with 10% transparency */
+        .slide-container::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('floral_background.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1; /* 10% transparency */
+            z-index: 1;
         }
 
         /* Content Card */
@@ -62,6 +73,7 @@
             font-style: italic;
             z-index: 20;
             letter-spacing: -1px;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.5);
         }
 
         /* Photo container */
@@ -71,6 +83,7 @@
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             display: inline-block;
+            z-index: 20;
         }
 
         .img-container img {
@@ -89,7 +102,7 @@
             position: absolute;
             animation: floatHeart 7s infinite ease-in-out;
             opacity: 0;
-            z-index: 1;
+            z-index: 5;
         }
 
         @keyframes floatHeart {
@@ -99,23 +112,19 @@
             100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
         }
 
-        /* --- OPENING SCREEN (OVERLAY) STYLING --- */
+        /* --- OPENING SCREEN (OVERLAY) --- */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999; text-align: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             color: white;
-
-            /* EDIT OPENING BACKGROUND HERE:
-               - To use a solid color: background: #7f0000;
-               - To use an image: background: url('YOUR_IMAGE_URL_HERE') center/cover no-repeat;
-            */
+            /* Keeps the original solid look for Slide 1 */
             background: radial-gradient(circle, #b71c1c 0%, #7f0000 100%);
         }
 
         .start-btn {
-            background: #d4af37; /* Button Color (Gold) */
-            color: #3d0000;      /* Button Text Color */
+            background: #d4af37;
+            color: #3d0000;
             padding: 18px 50px; 
             font-size: 1.3rem; 
             font-weight: bold;
@@ -134,7 +143,7 @@
             background: #f1c40f;
         }
 
-        /* Bottom-Right Controller */
+        /* Controls */
         #ui-bar {
             position: fixed; bottom: 24px; right: 24px;  
             background: rgba(255, 255, 255, 0.9); 
@@ -157,23 +166,15 @@
 
 <div id="progress-container"><div id="progress-fill"></div></div>
 
-<!-- START OF OPENING SCREEN -->
 <div id="overlay">
-    <!-- You can change or remove this icon -->
     <i class="fa-solid fa-heart" style="font-size: 50px; color: #d4af37; margin-bottom: 20px;"></i>
-    
-    <!-- Main Title on Opening Screen -->
     <h1 style="color: white; margin-bottom: 10px; font-style: normal;">中西合璧浪漫情人節晚會</h1>
-    
-    <!-- Subtitle -->
     <p style="color: #fce4ec; margin-bottom: 40px; font-size: 1.2rem;">信望愛Agape夫婦小組</p>
-    
-    <!-- EDIT START BUTTON WORDS HERE -->
+    <!-- UPDATE START BUTTON TEXT HERE -->
     <button class="start-btn" onclick="initExperience()">
-        Click to Begin
+        Enter Celebration
     </button>
 </div>
-<!-- END OF OPENING SCREEN -->
 
 <audio id="bg-music" loop></audio>
 
@@ -188,7 +189,6 @@
 <div id="presentation-wrapper"></div>
 
 <script>
-    // Music Files - ensure these are in the same folder as this file
     const musicPlaylist = [
         "right-here-waiting-richard-marx.mp3",
         "my_heart_will_go_on.mp3",
@@ -197,7 +197,6 @@
         "Nothing_s_Gonna_Change_My_Love_For_You.mp3"
     ];
 
-    // Couple Data
     const couples = [
         { name: "山哥&Candy", img: "山哥&Candy.jpeg", msg: "A night dedicated to the timeless power of love." },
         { name: "Sum&Nancy", img: "Sum&Nancy.jpeg", msg: "Journeying together through the melody of life." },
@@ -233,14 +232,13 @@
 
     let currentSlide = 0;
     let progress = 0;
-    const duration = 8000; // Slide duration (8 seconds)
+    const duration = 8000; 
     let slidesPaused = false;
     let lastTick = 0;
     const audio = document.getElementById('bg-music');
     const wrapper = document.getElementById('presentation-wrapper');
     const slideJump = document.getElementById('slide-jump');
 
-    // Generate slides
     couples.forEach((couple, index) => {
         const slide = document.createElement('div');
         slide.className = `slide-container`;
@@ -254,7 +252,6 @@
                 </div>
             </div>
         `;
-        // Add animated hearts to background
         for (let i = 0; i < 6; i++) {
             const heart = document.createElement('i');
             heart.className = 'fa-solid fa-heart floating-heart';
@@ -276,7 +273,7 @@
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('ui-bar').style.display = 'flex';
         audio.src = musicPlaylist[0];
-        audio.play().catch(e => console.log("Audio blocked by browser"));
+        audio.play().catch(e => console.log("Audio play blocked"));
         lastTick = Date.now();
         requestAnimationFrame(slideLoop);
     }
@@ -332,4 +329,3 @@
 </script>
 </body>
 </html>
-
