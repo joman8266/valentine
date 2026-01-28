@@ -94,30 +94,26 @@
             border-radius: 4px;
         }
 
-        /* Grid Layout (4 Images) */
-        .grid-wrapper {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px; 
-            width: 95%; 
+        /* Simplified Multi-Image Layout (No Grid/No Frame) */
+        .raw-photo-flow {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            width: 95%;
             max-width: 1400px;
             z-index: 20;
         }
 
-        .grid-item {
-            background: white;
-            padding: 4px; 
-            border-radius: 6px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            overflow: hidden;
-        }
-
-        .grid-item img {
-            width: 100%;
-            height: 35vh; 
-            object-fit: cover;
-            border-radius: 2px;
-            display: block;
+        .raw-photo-flow img {
+            max-width: calc(50% - 15px);
+            max-height: 38vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .message-box {
@@ -136,7 +132,7 @@
             backdrop-filter: blur(8px);
         }
 
-        /* Landing Page - BACKGROUND ADDED */
+        /* Landing Page */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999; text-align: center;
@@ -175,10 +171,10 @@
         }
         .start-btn:hover { transform: scale(1.05); }
 
-        /* UI Controls - TRANSPARENCY & HOVER ADDED */
+        /* UI Controls */
         #ui-bar {
             position: fixed; bottom: 24px; right: 24px; 
-            background: rgba(255, 255, 255, 0.4); /* Transparent by default */
+            background: rgba(255, 255, 255, 0.4); 
             backdrop-filter: blur(4px);
             padding: 10px 20px; border-radius: 40px; 
             display: none; gap: 15px; align-items: center;
@@ -199,7 +195,6 @@
         #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 5px; background: rgba(0,0,0,0.05); z-index: 10000; display: none; }
         #progress-fill { height: 100%; width: 0%; background: #ff4081; }
 
-        /* FLOATING HEARTS - SIZE DOUBLED */
         .floating-heart {
             color: #ff80ab;
             position: absolute;
@@ -220,11 +215,10 @@
 
 <div id="overlay">
     <div class="static-title">中西合璧浪漫情人節晚會</div>
-    <div style="font-size: 1.2rem; color: #b71c1c; letter-spacing: 0.3em; font-weight: bold;">信望愛 Agape 夫婦小組</div>
+    <div style="font-size: 1.2rem; color: #b71c1c; letter-spacing: 0.3em; font-weight: bold;">信望愛AGAPE夫婦小組</div>
     <button class="start-btn" id="start-btn">開始</button>
 </div>
 
-<!-- Removed loop to allow manual/auto progression to next track -->
 <audio id="bg-music"></audio>
 
 <div id="ui-bar">
@@ -238,9 +232,9 @@
 
 <script>
     const musicPlaylist = [
-        "All_Out_of_Love.mp3",
         "right-here-waiting-richard-marx.mp3",
         "my_heart_will_go_on.mp3",
+        "All_Out_of_Love.mp3",
         "Ocean_Deep.mp3",
         "Nothing_s_Gonna_Change_My_Love_For_You.mp3"
     ];
@@ -340,7 +334,7 @@
             slideJump.appendChild(opt);
         });
 
-        // Event Slides
+        // Event Slides - Changed to raw photo flow (no grid/no frame)
         eventPages.forEach((e, i) => {
             const index = couples.length + i;
             const slide = document.createElement('div');
@@ -349,11 +343,9 @@
             slide.innerHTML = `
                 <div class="content-card">
                     <h1>${e.title}</h1>
-                    <div class="grid-wrapper">
+                    <div class="raw-photo-flow">
                         ${e.imgs.map(img => `
-                            <div class="grid-item">
-                                <img src="${img}" onerror="this.src='https://placehold.co/400x300?text=Event+Photo'">
-                            </div>
+                            <img src="${img}" onerror="this.src='https://placehold.co/400x300?text=Event+Photo'">
                         `).join('')}
                     </div>
                     ${e.msg ? `<div class="message-box">${e.msg}</div>` : ''}
@@ -431,13 +423,15 @@
     }
 
     function playNextTrack() {
-        let currentTrack = audio.src.split('/').pop();
-        let currentIndex = musicPlaylist.indexOf(currentTrack);
+        let currentPath = audio.src;
+        let filename = currentPath.split('/').pop();
+        let currentIndex = musicPlaylist.indexOf(filename);
+        if (currentIndex === -1) currentIndex = 0;
+        
         audio.src = musicPlaylist[(currentIndex + 1) % musicPlaylist.length];
-        audio.play();
+        audio.play().catch(() => {});
     }
 
-    // Listener to automatically play next song in list
     audio.addEventListener('ended', playNextTrack);
 
     createSlides();
