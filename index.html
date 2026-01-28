@@ -42,7 +42,7 @@
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 245, 247, 0.15);
+            background: rgba(255, 245, 247, 0.1);
             z-index: 1;
         }
 
@@ -66,12 +66,12 @@
 
         h1 { 
             font-family: 'Playfair Display', serif; 
-            font-size: clamp(2rem, 4vw, 3rem); 
+            font-size: clamp(2rem, 4vw, 3.2rem); 
             color: #831010; 
             margin: 5px 0 10px 0;
             font-style: italic;
             z-index: 20;
-            text-shadow: 0 2px 4px rgba(255,255,255,0.9);
+            text-shadow: 0 2px 10px rgba(255,255,255,0.8);
         }
 
         /* Couple Layout (Single Image) */
@@ -94,19 +94,19 @@
             border-radius: 4px;
         }
 
-        /* Grid Layout (4 Images) - UPDATED FOR SIZE */
+        /* Grid Layout (4 Images) */
         .grid-wrapper {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px; /* Smaller gap */
-            width: 95%; /* Wider container */
+            gap: 10px; 
+            width: 95%; 
             max-width: 1400px;
             z-index: 20;
         }
 
         .grid-item {
             background: white;
-            padding: 4px; /* Reduced border thickness */
+            padding: 4px; 
             border-radius: 6px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             overflow: hidden;
@@ -114,7 +114,7 @@
 
         .grid-item img {
             width: 100%;
-            height: 33vh; /* Significantly taller images */
+            height: 35vh; 
             object-fit: cover;
             border-radius: 2px;
             display: block;
@@ -122,25 +122,28 @@
 
         .message-box {
             font-family: 'Lora', serif;
-            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-size: clamp(1rem, 2vw, 1.3rem);
             color: #b71c1c;
             margin-top: 15px;
             max-width: 800px;
             font-style: italic;
+            font-weight: 700;
             line-height: 1.4;
             z-index: 20;
-            background: rgba(255, 255, 255, 0.75);
-            padding: 8px 20px;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px 25px;
+            border-radius: 30px;
+            backdrop-filter: blur(8px);
         }
 
-        /* Landing Page */
+        /* Landing Page - BACKGROUND ADDED */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999; text-align: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background-color: #fff5f7;
+            background-image: url('heart_background.jpg');
+            background-size: cover;
+            background-position: center;
         }
 
         .static-title {
@@ -152,6 +155,7 @@
             color: #831010;
             letter-spacing: 0.1em;
             font-weight: bold;
+            text-shadow: 0 2px 20px rgba(255,255,255,0.9);
         }
 
         .start-btn {
@@ -167,16 +171,27 @@
             letter-spacing: 5px;
             margin-top: 50px;
             box-shadow: 0 10px 30px rgba(229, 57, 53, 0.4);
+            transition: transform 0.2s;
         }
+        .start-btn:hover { transform: scale(1.05); }
 
-        /* UI Controls */
+        /* UI Controls - TRANSPARENCY & HOVER ADDED */
         #ui-bar {
             position: fixed; bottom: 24px; right: 24px; 
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.4); /* Transparent by default */
+            backdrop-filter: blur(4px);
             padding: 10px 20px; border-radius: 40px; 
             display: none; gap: 15px; align-items: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             z-index: 1000;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+        #ui-bar:hover {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            opacity: 1;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
         }
         .control-btn { border: none; background: none; cursor: pointer; color: #831010; font-size: 1.1rem; }
         .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; cursor: pointer; font-size: 0.9rem; max-width: 150px; }
@@ -184,6 +199,7 @@
         #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 5px; background: rgba(0,0,0,0.05); z-index: 10000; display: none; }
         #progress-fill { height: 100%; width: 0%; background: #ff4081; }
 
+        /* FLOATING HEARTS - SIZE DOUBLED */
         .floating-heart {
             color: #ff80ab;
             position: absolute;
@@ -192,9 +208,9 @@
             z-index: 5;
         }
         @keyframes floatHeart {
-            0% { transform: translateY(20vh) rotate(0deg) scale(0.5); opacity: 0; }
-            50% { opacity: 0.5; }
-            100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
+            0% { transform: translateY(20vh) rotate(0deg) scale(1); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-110vh) rotate(360deg) scale(2.4); opacity: 0; }
         }
     </style>
 </head>
@@ -204,7 +220,7 @@
 
 <div id="overlay">
     <div class="static-title">中西合璧浪漫情人節晚會</div>
-    <div style="font-size: 1.2rem; color: #b71c1c; letter-spacing: 0.3em;">信望愛AGAPE夫婦小組</div>
+    <div style="font-size: 1.2rem; color: #b71c1c; letter-spacing: 0.3em; font-weight: bold;">信望愛AGAPE夫婦小組</div>
     <button class="start-btn" id="start-btn">開始</button>
 </div>
 
@@ -256,38 +272,37 @@
         { name: "Leo & Linda", img: "Leo&Linda.jpeg", msg: "Always and Forever." }
     ];
 
-    // ALL 30 EVENT PAGES ARE HERE FOR EASY EDITING
     const eventPages = [
-        { title: "晚會花絮 1", bg: "bg_event_1.jpg", imgs: ["p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg"], msg: "精彩瞬間" },
-        { title: "晚會花絮 2", bg: "bg_event_2.jpg", imgs: ["p5.jpg", "p6.jpg", "p7.jpg", "p8.jpg"], msg: "溫馨時刻" },
-        { title: "晚會花絮 3", bg: "bg_event_3.jpg", imgs: ["p9.jpg", "p10.jpg", "p11.jpg", "p12.jpg"], msg: "喜樂滿溢" },
-        { title: "晚會花絮 4", bg: "bg_event_4.jpg", imgs: ["a.jpg", "b.jpg", "c.jpg", "d.jpg"], msg: "精彩重溫" },
-        { title: "晚會花絮 5", bg: "bg_event_5.jpg", imgs: ["e.jpg", "f.jpg", "g.jpg", "h.jpg"], msg: "美好回憶" },
-        { title: "晚會花絮 6", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 7", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 8", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 9", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 10", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 11", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 12", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 13", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 14", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 15", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 16", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 17", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 18", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 19", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 20", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 21", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 22", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 23", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 24", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 25", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 26", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 27", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 28", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 29", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 30", bg: "bg_event.jpg", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "最後驚喜" }
+        { title: "晚會花絮 1", imgs: ["p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg"], msg: "精彩瞬間" },
+        { title: "晚會花絮 2", imgs: ["p5.jpg", "p6.jpg", "p7.jpg", "p8.jpg"], msg: "溫馨時刻" },
+        { title: "晚會花絮 3", imgs: ["p9.jpg", "p10.jpg", "p11.jpg", "p12.jpg"], msg: "喜樂滿溢" },
+        { title: "晚會花絮 4", imgs: ["a.jpg", "b.jpg", "c.jpg", "d.jpg"], msg: "精彩重溫" },
+        { title: "晚會花絮 5", imgs: ["e.jpg", "f.jpg", "g.jpg", "h.jpg"], msg: "美好回憶" },
+        { title: "晚會花絮 6", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 7", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 8", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 9", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 10", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 11", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 12", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 13", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 14", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 15", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 16", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 17", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 18", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 19", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 20", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 21", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 22", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 23", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 24", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 25", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 26", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 27", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 28", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 29", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
+        { title: "晚會花絮 30", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "最後驚喜" }
     ];
 
     let currentSlide = 0;
@@ -301,7 +316,7 @@
     const slideJump = document.getElementById('slide-jump');
 
     function createSlides() {
-        // Create Couple Slides
+        // Couple Slides
         couples.forEach((c, i) => {
             const slide = document.createElement('div');
             slide.className = 'slide-container';
@@ -324,12 +339,12 @@
             slideJump.appendChild(opt);
         });
 
-        // Create Event Slides
+        // Event Slides - UPDATED BACKGROUND
         eventPages.forEach((e, i) => {
             const index = couples.length + i;
             const slide = document.createElement('div');
             slide.className = 'slide-container';
-            slide.style.backgroundImage = `url('${e.bg}')`;
+            slide.style.backgroundImage = "url('festive_background.webp')";
             slide.innerHTML = `
                 <div class="content-card">
                     <h1>${e.title}</h1>
@@ -353,12 +368,13 @@
     }
 
     function addHearts(parent) {
+        // Add 5 hearts per couple slide
         for (let i = 0; i < 5; i++) {
             const heart = document.createElement('i');
             heart.className = 'fa-solid fa-heart floating-heart';
             heart.style.left = Math.random() * 90 + 'vw';
             heart.style.bottom = '-10%';
-            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            heart.style.fontSize = (Math.random() * 25 + 25) + 'px'; // Size range doubled
             heart.style.animationDelay = (Math.random() * 5) + 's';
             parent.appendChild(heart);
         }
