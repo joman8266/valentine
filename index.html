@@ -115,7 +115,7 @@
             display: inline-block;
             z-index: 20;
             margin-bottom: 25px;
-            border: none; /* Removed gold border from couple pages */
+            border: none; /* No gold border for couple photos */
         }
 
         .img-container img {
@@ -145,13 +145,13 @@
             margin-top: 10px;
         }
 
-        /* Hanging Hearts Banner */
+        /* Hanging Hearts Banner - ADJUSTED */
         .hanging-hearts-banner {
             position: absolute;
             top: -10px;
             left: 0;
             width: 100%;
-            height: 120px;
+            height: 180px;
             display: flex;
             justify-content: space-around;
             z-index: 100;
@@ -162,25 +162,31 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            animation: swing 3s infinite ease-in-out;
+            animation: swing 3.5s infinite ease-in-out;
             transform-origin: top center;
         }
 
         .string {
             width: 1.5px;
-            background: #d4af37;
+            background: linear-gradient(to bottom, #d4af37, #f9f295, #b8860b);
             height: var(--string-len, 40px);
         }
 
         .hanging-heart i {
             color: var(--heart-color, #e53935);
-            font-size: 24px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            font-size: 42px; /* Bigger */
+            filter: drop-shadow(0 0 12px rgba(255, 64, 129, 0.6)); /* Glow */
+            animation: shimmer 2s infinite alternate ease-in-out;
         }
 
         @keyframes swing {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
+            0%, 100% { transform: rotate(-7deg); }
+            50% { transform: rotate(7deg); }
+        }
+
+        @keyframes shimmer {
+            0% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.4)); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 20px rgba(255, 192, 203, 0.9)) brightness(1.2); transform: scale(1.1); }
         }
 
         /* UI Styling */
@@ -448,12 +454,13 @@
 
     function createHangingBanner() {
         const banner = document.getElementById('heart-banner');
-        const colors = ['#e53935', '#ff80ab', '#c2185b', '#ff4081'];
-        const count = 15;
+        // Sparkly high-contrast palette
+        const colors = ['#ff0055', '#ff80ab', '#ff4081', '#fce4ec'];
+        const count = 10; // Reduced as requested
         for (let i = 0; i < count; i++) {
             const container = document.createElement('div');
             container.className = 'hanging-heart';
-            const stringLen = Math.floor(Math.random() * 50) + 30;
+            const stringLen = Math.floor(Math.random() * 70) + 40; // Slightly longer for bigger hearts
             container.style.setProperty('--string-len', stringLen + 'px');
             container.style.animationDelay = (Math.random() * 2) + 's';
             container.style.setProperty('--heart-color', colors[Math.floor(Math.random() * colors.length)]);
@@ -461,6 +468,8 @@
             string.className = 'string';
             const heart = document.createElement('i');
             heart.className = 'fa-solid fa-heart';
+            // Each heart gets a slightly different shimmer speed
+            heart.style.animationDuration = (2 + Math.random()) + 's';
             container.appendChild(string);
             container.appendChild(heart);
             banner.appendChild(container);
@@ -531,4 +540,3 @@
 </script>
 </body>
 </html>
-
