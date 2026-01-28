@@ -32,8 +32,6 @@
             align-items: center;     
             text-align: center;
             overflow: hidden;
-            /* Slide Background */
-            background-image: url('floral_background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -43,14 +41,15 @@
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 245, 247, 0.4); /* Soft overlay to ensure legibility */
+            background: rgba(255, 245, 247, 0.35);
             z-index: 1;
         }
 
         .content-card {
             position: relative;
             z-index: 10;
-            max-width: 90%;
+            max-width: 95%;
+            width: 100%;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -67,7 +66,7 @@
 
         h1 { 
             font-family: 'Playfair Display', serif; 
-            font-size: clamp(2.2rem, 6vw, 4rem); 
+            font-size: clamp(2rem, 5vw, 3.5rem); 
             color: #831010; 
             margin: 0 0 15px 0;
             font-style: italic;
@@ -75,22 +74,7 @@
             text-shadow: 0 2px 4px rgba(255,255,255,0.8);
         }
 
-        .couple-message {
-            font-family: 'Lora', serif;
-            font-size: clamp(1.21rem, 2.75vw, 1.65rem);
-            color: #b71c1c;
-            margin-top: 25px;
-            max-width: 800px;
-            font-style: italic;
-            line-height: 1.5;
-            z-index: 20;
-            background: rgba(255, 255, 255, 0.75);
-            padding: 15px 30px;
-            border-radius: 20px;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
+        /* Couple Layout (Single Image) */
         .photo-wrapper {
             background: white;
             padding: 12px;
@@ -108,6 +92,46 @@
             height: auto;
             object-fit: contain;
             border-radius: 4px;
+        }
+
+        /* Grid Layout (4 Images) */
+        .grid-wrapper {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 80%;
+            max-width: 1000px;
+            z-index: 20;
+        }
+
+        .grid-item {
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 25vh;
+            object-fit: cover;
+            border-radius: 4px;
+            display: block;
+        }
+
+        .couple-message {
+            font-family: 'Lora', serif;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: #b71c1c;
+            margin-top: 25px;
+            max-width: 800px;
+            font-style: italic;
+            line-height: 1.4;
+            z-index: 20;
+            background: rgba(255, 255, 255, 0.75);
+            padding: 12px 25px;
+            border-radius: 20px;
+            backdrop-filter: blur(8px);
         }
 
         .floating-heart {
@@ -130,7 +154,6 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999; text-align: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            /* Landing Background */
             background-image: url('heart_background.jpg');
             background-size: cover;
             background-position: center;
@@ -140,7 +163,7 @@
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(252, 228, 236, 0.3); /* Tint for better text contrast */
+            background: rgba(252, 228, 236, 0.3);
             z-index: 1;
         }
 
@@ -187,17 +210,12 @@
         .start-btn:hover {
             transform: scale(1.05);
             background: #c62828;
-            box-shadow: 0 15px 40px rgba(229, 57, 53, 0.6);
             animation: heartPump 1.2s infinite;
         }
 
         @keyframes heartPump {
-            0% { transform: scale(1.05); }
-            15% { transform: scale(1.15); }
-            30% { transform: scale(1.05); }
-            45% { transform: scale(1.18); }
-            60% { transform: scale(1.05); }
-            100% { transform: scale(1.05); }
+            0%, 30%, 60%, 100% { transform: scale(1.05); }
+            15%, 45% { transform: scale(1.15); }
         }
 
         /* Controls */
@@ -212,7 +230,7 @@
         #ui-bar:hover { opacity: 1; }
 
         .control-btn { border: none; background: none; cursor: pointer; color: #831010; font-size: 0.85rem; padding: 4px; }
-        .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; outline: none; cursor: pointer; font-size: 0.75rem; }
+        .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; outline: none; cursor: pointer; font-size: 0.75rem; width: 150px; }
         #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(0,0,0,0.02); z-index: 10000; display: none; }
         #progress-fill { height: 100%; width: 0%; background: #ff4081; transition: width 0.1s linear; }
     </style>
@@ -249,6 +267,7 @@
         "Nothing_s_Gonna_Change_My_Love_For_You.mp3"
     ];
 
+    // EXACTLY 25 COUPLES
     const couples = [
         { name: "山哥 & Candy", img: "山哥&Candy.jpeg", msg: "A night dedicated to the timeless power of love." },
         { name: "Sum & Nancy", img: "Sum&Nancy.jpeg", msg: "Journeying together through the melody of life." },
@@ -274,13 +293,24 @@
         { name: "Nick & Dakki", img: "couple22.jpeg", msg: "Purest affection." },
         { name: "龍牧師 & 龍師母", img: "龍牧師&龍師母.jpeg", msg: "Hand in hand." },
         { name: "Benny & Vivian", img: "Benny&Vivian.jpeg", msg: "Radiant love." },
-        { name: "Leo & Linda", img: "Leo&Linda.jpeg", msg: "Always and Forever." },
-        { name: "Couple 26", img: "couple26.jpeg", msg: "Soulmates forever." },
-        { name: "Couple 27", img: "couple27.jpeg", msg: "Deeply connected." },
-        { name: "Couple 28", img: "couple28.jpeg", msg: "Boundless joy." },
-        { name: "Couple 29", img: "couple29.jpeg", msg: "Treasured bond." },
-        { name: "Couple 30", img: "couple30.jpeg", msg: "Walking in light" }
+        { name: "Leo & Linda", img: "Leo&Linda.jpeg", msg: "Always and Forever." }
     ];
+
+    // 30 EVENT PAGES (PLACEHOLDERS)
+    const eventPages = [];
+    for(let i = 1; i <= 30; i++) {
+        eventPages.push({
+            title: `夫婦小組花絮 ${i}`,
+            bg: "event_background.jpg", // PLACEHOLDER: Insert your event background filename here
+            imgs: [
+                "event_photo_1.jpg", // PLACEHOLDER
+                "event_photo_2.jpg", // PLACEHOLDER
+                "event_photo_3.jpg", // PLACEHOLDER
+                "event_photo_4.jpg"  // PLACEHOLDER
+            ],
+            msg: "精彩瞬間，永誌難忘。"
+        });
+    }
 
     let currentSlide = 0;
     let progress = 0;
@@ -293,22 +323,61 @@
     const wrapper = document.getElementById('presentation-wrapper');
     const slideJump = document.getElementById('slide-jump');
 
-    // Create Slides
-    couples.forEach((couple, index) => {
-        const slide = document.createElement('div');
-        slide.className = 'slide-container';
-        slide.innerHTML = `
-            <div class="content-card">
-                <h1>${couple.name}</h1>
-                <div class="photo-wrapper">
-                    <div class="img-container">
-                        <img src="${couple.img}" alt="${couple.name}" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800&auto=format&fit=crop'">
+    function createSlides() {
+        // Build Couple Slides
+        couples.forEach((couple, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'slide-container';
+            slide.style.backgroundImage = "url('floral_background.png')";
+            slide.innerHTML = `
+                <div class="content-card">
+                    <h1>${couple.name}</h1>
+                    <div class="photo-wrapper">
+                        <div class="img-container">
+                            <img src="${couple.img}" alt="${couple.name}" onerror="this.src='https://placehold.co/600x400?text=Couple+Photo'">
+                        </div>
                     </div>
+                    <div class="couple-message">${couple.msg}</div>
                 </div>
-                <div class="couple-message">${couple.msg}</div>
-            </div>
-        `;
-        // Add decorative floating hearts
+            `;
+            addHearts(slide);
+            wrapper.appendChild(slide);
+
+            const opt = document.createElement('option');
+            opt.value = index;
+            opt.innerText = (index + 1) + ". " + couple.name;
+            slideJump.appendChild(opt);
+        });
+
+        // Build Event Slides
+        eventPages.forEach((event, index) => {
+            const slideIdx = couples.length + index;
+            const slide = document.createElement('div');
+            slide.className = 'slide-container';
+            slide.style.backgroundImage = `url('${event.bg}')`;
+            slide.innerHTML = `
+                <div class="content-card">
+                    <h1>${event.title}</h1>
+                    <div class="grid-wrapper">
+                        ${event.imgs.map(img => `
+                            <div class="grid-item">
+                                <img src="${img}" onerror="this.src='https://placehold.co/400x300?text=Event+Photo'">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="couple-message">${event.msg}</div>
+                </div>
+            `;
+            wrapper.appendChild(slide);
+
+            const opt = document.createElement('option');
+            opt.value = slideIdx;
+            opt.innerText = (slideIdx + 1) + ". " + event.title;
+            slideJump.appendChild(opt);
+        });
+    }
+
+    function addHearts(parent) {
         for (let i = 0; i < 6; i++) {
             const heart = document.createElement('i');
             heart.className = 'fa-solid fa-heart floating-heart';
@@ -316,15 +385,9 @@
             heart.style.bottom = '-10%';
             heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
             heart.style.animationDelay = (Math.random() * 7) + 's';
-            slide.appendChild(heart);
+            parent.appendChild(heart);
         }
-        wrapper.appendChild(slide);
-
-        const opt = document.createElement('option');
-        opt.value = index;
-        opt.innerText = (index + 1) + ". " + couple.name;
-        slideJump.appendChild(opt);
-    });
+    }
 
     function initExperience() {
         document.getElementById('overlay').style.display = 'none';
@@ -333,13 +396,11 @@
         document.getElementById('ui-bar').style.display = 'flex';
         
         loadTrack(0);
-        audio.play().catch(e => console.log("Audio play needs manual kickstart"));
+        audio.play().catch(e => console.log("Audio needs manual click"));
         
         lastTick = Date.now();
         requestAnimationFrame(slideLoop);
     }
-
-    document.getElementById('start-btn').addEventListener('click', initExperience);
 
     function slideLoop() {
         const now = Date.now();
@@ -353,7 +414,8 @@
             
             if (progress >= duration) {
                 progress = 0;
-                currentSlide = (currentSlide + 1) % couples.length;
+                const totalSlides = couples.length + eventPages.length;
+                currentSlide = (currentSlide + 1) % totalSlides;
                 wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
                 slideJump.value = currentSlide;
             }
@@ -380,7 +442,7 @@
     function playNextTrack() {
         currentTrackIndex = (currentTrackIndex + 1) % musicPlaylist.length;
         loadTrack(currentTrackIndex);
-        audio.play().catch(e => console.log("Play failed", e));
+        audio.play();
         updateMusicUI();
     }
 
@@ -395,6 +457,8 @@
         wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
     }
 
+    createSlides();
+    document.getElementById('start-btn').addEventListener('click', initExperience);
     audio.addEventListener('ended', playNextTrack);
 </script>
 </body>
