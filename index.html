@@ -37,7 +37,6 @@
             background-repeat: no-repeat;
         }
 
-        /* Subtle overlay for legibility */
         .slide-container::after {
             content: "";
             position: absolute;
@@ -74,7 +73,6 @@
             text-shadow: 0 2px 10px rgba(255,255,255,0.8);
         }
 
-        /* Couple Layout (Single Image) */
         .photo-wrapper {
             background: white;
             padding: 12px;
@@ -94,26 +92,29 @@
             border-radius: 4px;
         }
 
-        /* Simplified Multi-Image Layout (No Grid/No Frame) */
-        .raw-photo-flow {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            width: 95%;
+        .grid-wrapper {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px; 
+            width: 95%; 
             max-width: 1400px;
             z-index: 20;
         }
 
-        .raw-photo-flow img {
-            max-width: calc(50% - 15px);
-            max-height: 38vh;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            border-radius: 4px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        .grid-item {
+            background: white;
+            padding: 4px; 
+            border-radius: 6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 35vh; 
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
         }
 
         .message-box {
@@ -132,14 +133,56 @@
             backdrop-filter: blur(8px);
         }
 
-        /* Landing Page */
+        /* Landing Page Base */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999; text-align: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background-image: url('heart_background.jpg');
-            background-size: cover;
-            background-position: center;
+            background-color: #ffeff2;
+            overflow: hidden;
+        }
+
+        /* REFINED DROPPING HEART HEADER (NO CLOUDS) */
+        .header-decoration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            pointer-events: none;
+        }
+
+        .dropping-hearts {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .hanging-heart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: sway 4s infinite ease-in-out;
+            transform-origin: top center;
+        }
+
+        .string {
+            width: 1px;
+            background: rgba(131, 16, 16, 0.15);
+        }
+
+        .hanging-heart i {
+            color: #ffc1cc; /* Light Pink Hearts */
+            font-size: 1.6rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+            margin-top: -2px;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-4deg); }
+            50% { transform: rotate(4deg); }
         }
 
         .static-title {
@@ -147,6 +190,7 @@
             z-index: 10;
             font-family: 'Playfair Display', serif;
             font-size: clamp(2.5rem, 8vw, 4.5rem);
+            margin-top: 40px; 
             margin-bottom: 20px;
             color: #831010;
             letter-spacing: 0.1em;
@@ -155,10 +199,12 @@
         }
 
         .group-subtitle {
-            font-size: clamp(1.5rem, 3.2vw, 2.16rem);
+            font-size: 2.4rem; /* Doubled from 1.2rem */
             color: #b71c1c;
             letter-spacing: 0.2em;
             font-weight: bold;
+            position: relative;
+            z-index: 10;
         }
 
         .start-btn {
@@ -175,10 +221,10 @@
             margin-top: 50px;
             box-shadow: 0 10px 30px rgba(229, 57, 53, 0.4);
             transition: transform 0.2s;
+            z-index: 100;
         }
         .start-btn:hover { transform: scale(1.05); }
 
-        /* UI Controls */
         #ui-bar {
             position: fixed; bottom: 24px; right: 24px; 
             background: rgba(255, 255, 255, 0.4); 
@@ -194,7 +240,6 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             opacity: 1;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
         }
         .control-btn { border: none; background: none; cursor: pointer; color: #831010; font-size: 1.1rem; }
         .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; cursor: pointer; font-size: 0.9rem; max-width: 150px; }
@@ -221,12 +266,25 @@
 <div id="progress-container"><div id="progress-fill"></div></div>
 
 <div id="overlay">
+    <!-- Clean Dropping Hearts Decoration -->
+    <div class="header-decoration">
+        <div class="dropping-hearts">
+            <div class="hanging-heart" style="animation-delay: 0s"><div class="string" style="height: 40px"></div><i class="fa-solid fa-heart"></i></div>
+            <div class="hanging-heart" style="animation-delay: 0.5s"><div class="string" style="height: 70px"></div><i class="fa-solid fa-heart"></i></div>
+            <div class="hanging-heart" style="animation-delay: 1.2s"><div class="string" style="height: 50px"></div><i class="fa-solid fa-heart"></i></div>
+            <div class="hanging-heart" style="animation-delay: 0.3s"><div class="string" style="height: 90px"></div><i class="fa-solid fa-heart"></i></div>
+            <div class="hanging-heart" style="animation-delay: 0.8s"><div class="string" style="height: 60px"></div><i class="fa-solid fa-heart"></i></div>
+            <div class="hanging-heart" style="animation-delay: 1.5s"><div class="string" style="height: 80px"></div><i class="fa-solid fa-heart"></i></div>
+            <div class="hanging-heart" style="animation-delay: 0.2s"><div class="string" style="height: 45px"></div><i class="fa-solid fa-heart"></i></div>
+        </div>
+    </div>
+
     <div class="static-title">中西合璧浪漫情人節晚會</div>
-    <div class="group-subtitle">信望愛 Agape 夫婦小組</div>
+    <div class="group-subtitle">信望愛Agape夫婦小組</div>
     <button class="start-btn" id="start-btn">開始</button>
 </div>
 
-<audio id="bg-music"></audio>
+<audio id="bg-music" loop></audio>
 
 <div id="ui-bar">
     <button onclick="toggleSlidePause()" id="slide-pause-btn" class="control-btn"><i class="fa-solid fa-pause"></i></button>
@@ -239,11 +297,11 @@
 
 <script>
     const musicPlaylist = [
-        "All_Out_of_Love.mp3",
-        "Nothing_s_Gonna_Change_My_Love_For_You.mp3",
         "right-here-waiting-richard-marx.mp3",
         "my_heart_will_go_on.mp3",
-        "Ocean_Deep.mp3"
+        "All_Out_of_Love.mp3",
+        "Ocean_Deep.mp3",
+        "Nothing_s_Gonna_Change_My_Love_For_You.mp3"
     ];
 
     const couples = [
@@ -275,36 +333,11 @@
     ];
 
     const eventPages = [
-        { title: "晚會花絮 1", imgs: ["1.jpg", "2.jpg", "3.jpg", "4.jpg"], msg: "精彩瞬間" },
+        { title: "晚會花絮 1", imgs: ["p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg"], msg: "精彩瞬間" },
         { title: "晚會花絮 2", imgs: ["p5.jpg", "p6.jpg", "p7.jpg", "p8.jpg"], msg: "溫馨時刻" },
         { title: "晚會花絮 3", imgs: ["p9.jpg", "p10.jpg", "p11.jpg", "p12.jpg"], msg: "喜樂滿溢" },
         { title: "晚會花絮 4", imgs: ["a.jpg", "b.jpg", "c.jpg", "d.jpg"], msg: "精彩重溫" },
-        { title: "晚會花絮 5", imgs: ["e.jpg", "f.jpg", "g.jpg", "h.jpg"], msg: "美好回憶" },
-        { title: "晚會花絮 6", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 7", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 8", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 9", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 10", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 11", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 12", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 13", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 14", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 15", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 16", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 17", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 18", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 19", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 20", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 21", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 22", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 23", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 24", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 25", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 26", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 27", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 28", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 29", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "" },
-        { title: "晚會花絮 30", imgs: ["i1.jpg", "i2.jpg", "i3.jpg", "i4.jpg"], msg: "最後驚喜" }
+        { title: "晚會花絮 5", imgs: ["e.jpg", "f.jpg", "g.jpg", "h.jpg"], msg: "美好回憶" }
     ];
 
     let currentSlide = 0;
@@ -348,9 +381,11 @@
             slide.innerHTML = `
                 <div class="content-card">
                     <h1>${e.title}</h1>
-                    <div class="raw-photo-flow">
+                    <div class="grid-wrapper">
                         ${e.imgs.map(img => `
-                            <img src="${img}" onerror="this.src='https://placehold.co/400x300?text=Event+Photo'">
+                            <div class="grid-item">
+                                <img src="${img}" onerror="this.src='https://placehold.co/400x300?text=Event+Photo'">
+                            </div>
                         `).join('')}
                     </div>
                     ${e.msg ? `<div class="message-box">${e.msg}</div>` : ''}
@@ -428,16 +463,11 @@
     }
 
     function playNextTrack() {
-        let currentPath = audio.src;
-        let filename = currentPath.split('/').pop();
-        let currentIndex = musicPlaylist.indexOf(filename);
-        if (currentIndex === -1) currentIndex = 0;
-        
+        let currentTrack = audio.src.split('/').pop();
+        let currentIndex = musicPlaylist.indexOf(currentTrack);
         audio.src = musicPlaylist[(currentIndex + 1) % musicPlaylist.length];
-        audio.play().catch(() => {});
+        audio.play();
     }
-
-    audio.addEventListener('ended', playNextTrack);
 
     createSlides();
     document.getElementById('start-btn').addEventListener('click', init);
