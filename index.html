@@ -24,6 +24,11 @@
             display: none; 
         }
 
+        /* Utility class to disable transition for seamless loop reset */
+        .no-transition {
+            transition: none !important;
+        }
+
         .slide-container { 
             width: 100vw; height: 100vh; 
             position: relative;
@@ -41,7 +46,7 @@
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 245, 247, 0.05);
+            background: rgba(255, 255, 255, 0.3); 
             z-index: 1;
         }
 
@@ -73,7 +78,6 @@
             text-shadow: 0 2px 10px rgba(255,255,255,0.8);
         }
 
-        /* Layout for Event Photos */
         .flex-photo-container {
             display: flex;
             flex-wrap: wrap;
@@ -93,7 +97,7 @@
             flex: 0 1 calc(50% - 15px); 
             max-width: calc(50% - 15px);
             line-height: 0;
-            border: 3px solid #d4af37; /* Gold frame for event photos */
+            border: 3px solid #d4af37; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             padding: 0;
             overflow: hidden;
@@ -106,7 +110,6 @@
             display: block;
         }
 
-        /* Couple Page Layout */
         .photo-wrapper {
             background: white;
             padding: 10px; 
@@ -115,7 +118,7 @@
             display: inline-block;
             z-index: 20;
             margin-bottom: 25px;
-            border: none; /* No gold border for couple photos */
+            border: none; 
         }
 
         .img-container img {
@@ -175,7 +178,6 @@
         .hanging-heart i {
             color: var(--heart-color, #e53935);
             font-size: 44px;
-            /* High intensity glow */
             filter: drop-shadow(0 0 12px rgba(255, 64, 129, 0.6));
             animation: shimmer 2s infinite alternate ease-in-out;
         }
@@ -272,7 +274,6 @@
         #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 5px; background: rgba(0,0,0,0.1); z-index: 10000; display: none; }
         #progress-fill { height: 100%; width: 0%; background: #ff4081; }
 
-        /* Floating Animations */
         .floating-element {
             position: absolute;
             animation: floatUp 8s infinite ease-in-out;
@@ -461,7 +462,6 @@
 
     function createHangingBanner() {
         const banner = document.getElementById('heart-banner');
-        // Rich vibrant colors, removed light pink/white tones
         const colors = ['#e91e63', '#ff1744', '#d50000', '#c2185b', '#f44336'];
         const count = 10;
         for (let i = 0; i < count; i++) {
@@ -470,8 +470,6 @@
             const stringLen = Math.floor(Math.random() * 70) + 40;
             container.style.setProperty('--string-len', stringLen + 'px');
             container.style.animationDelay = (Math.random() * 2) + 's';
-            
-            // Assign deep colors to all hearts to prevent "pale" appearance
             container.style.setProperty('--heart-color', colors[i % colors.length]);
             
             const string = document.createElement('div');
@@ -497,8 +495,14 @@
             if(fill) fill.style.width = Math.min(percent, 100) + '%';
             if (progress >= duration) {
                 progress = 0;
-                currentSlide = (currentSlide + 1) % totalSlides;
-                jumpToSlide(currentSlide);
+                // Seamless logic: Check if we are at the end
+                if (currentSlide === totalSlides - 1) {
+                    currentSlide = 0;
+                    jumpToSlideSeamless(0);
+                } else {
+                    currentSlide++;
+                    jumpToSlide(currentSlide);
+                }
             }
         }
         requestAnimationFrame(slideLoop);
@@ -516,11 +520,36 @@
         requestAnimationFrame(slideLoop);
     }
 
+    /**
+     * Standard jump with transition
+     */
     function jumpToSlide(idx) {
         currentSlide = parseInt(idx);
         progress = 0;
         slideJump.value = currentSlide;
+        wrapper.classList.remove('no-transition'); // Ensure transition is on
         wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
+    }
+
+    /**
+     * Seamless reset jump without transition
+     */
+    function jumpToSlideSeamless(idx) {
+        currentSlide = parseInt(idx);
+        progress = 0;
+        slideJump.value = currentSlide;
+        
+        // Add no-transition class to jump instantly
+        wrapper.classList.add('no-transition');
+        wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
+        
+        // Force reflow to ensure the browser processes the instant jump
+        void wrapper.offsetHeight;
+        
+        // Re-enable transition for the next slide movement
+        setTimeout(() => {
+            wrapper.classList.remove('no-transition');
+        }, 50);
     }
 
     function toggleSlidePause() {
@@ -550,4 +579,3 @@
 </script>
 </body>
 </html>
-
