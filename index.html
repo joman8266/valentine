@@ -58,10 +58,6 @@
             animation: fadeIn 1.5s ease;
         }
 
-        .event-card {
-            justify-content: center;
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -83,8 +79,7 @@
             flex-wrap: wrap;
             justify-content: center;
             align-content: center; 
-            column-gap: 10px; 
-            row-gap: 0.5px; 
+            gap: 12px;
             width: 100%;
             max-width: 1200px;
             z-index: 20;
@@ -95,30 +90,32 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            flex: 0 1 calc(50% - 10px); 
-            max-width: calc(50% - 10px);
+            flex: 0 1 calc(50% - 15px); 
+            max-width: calc(50% - 15px);
             line-height: 0;
+            border: 3px solid #d4af37; /* Gold frame for event photos */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            padding: 0;
+            overflow: hidden;
         }
 
         .flex-photo-item img {
             width: 100%;
-            height: 40vh;
-            object-fit: contain;
+            height: 38vh;
+            object-fit: cover;
             display: block;
-            border: 1.5px solid #d4af37;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         /* Couple Page Layout */
         .photo-wrapper {
             background: white;
-            padding: 12px; 
-            border-radius: 8px;
+            padding: 10px; 
+            border-radius: 4px;
             box-shadow: 0 15px 45px rgba(0,0,0,0.1);
             display: inline-block;
             z-index: 20;
             margin-bottom: 25px;
-            border: none; 
+            border: none; /* Removed gold border from couple pages */
         }
 
         .img-container img {
@@ -128,7 +125,7 @@
             width: auto;
             height: auto;
             object-fit: contain;
-            border-radius: 4px;
+            border-radius: 2px;
         }
 
         .message-box {
@@ -170,7 +167,7 @@
         }
 
         .string {
-            width: 1px;
+            width: 1.5px;
             background: #d4af37;
             height: var(--string-len, 40px);
         }
@@ -191,8 +188,18 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999; text-align: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background-color: #ffeff2;
+            background-image: url('heart_background.jpg');
+            background-size: cover;
+            background-position: center;
             overflow: hidden;
+        }
+
+        #overlay::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.4);
+            z-index: 1;
         }
 
         .static-title {
@@ -205,6 +212,7 @@
             color: #831010;
             letter-spacing: 0.1em;
             font-weight: bold;
+            text-shadow: 0 2px 10px rgba(255,255,255,0.8);
         }
 
         .group-subtitle {
@@ -213,6 +221,7 @@
             letter-spacing: 0.2em;
             font-weight: bold;
             z-index: 10;
+            text-shadow: 0 2px 10px rgba(255,255,255,0.8);
         }
 
         .start-btn {
@@ -227,6 +236,12 @@
             letter-spacing: 5px;
             margin-top: 50px;
             z-index: 100;
+            box-shadow: 0 10px 30px rgba(131, 16, 16, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
         }
 
         #ui-bar {
@@ -236,6 +251,7 @@
             padding: 10px 20px; border-radius: 40px; 
             display: none; gap: 12px; align-items: center;
             z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .control-btn { border: none; background: none; cursor: pointer; color: #831010; font-size: 1.2rem; }
         .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; font-size: 0.9rem; }
@@ -251,9 +267,6 @@
             z-index: 5;
         }
         
-        .floating-heart { color: #ff80ab; }
-        .floating-balloon { color: #ff4081; }
-
         @keyframes floatUp {
             0% { transform: translateY(20vh) rotate(0deg); opacity: 0; }
             30% { opacity: 0.6; }
@@ -267,9 +280,7 @@
 <div id="progress-container"><div id="progress-fill"></div></div>
 
 <div id="overlay">
-    <!-- Hanging Heart Banner -->
     <div id="heart-banner" class="hanging-hearts-banner"></div>
-    
     <div class="static-title">中西合璧浪漫情人節晚會</div>
     <div class="group-subtitle">信望愛Agape夫婦小組</div>
     <button class="start-btn" id="start-btn">開始</button>
@@ -349,7 +360,7 @@
 
     let currentSlide = 0;
     let progress = 0;
-    const duration = 15000; // Increased to 15 seconds as requested
+    const duration = 15000; 
     let slidesPaused = false;
     let lastTick = 0;
     let totalSlides = 0;
@@ -371,7 +382,7 @@
             `;
         } else {
             return `
-                <div class="content-card event-card">
+                <div class="content-card">
                     <h1>${item.title}</h1>
                     <div class="flex-photo-container">
                         ${item.imgs.map(img => `
@@ -392,7 +403,7 @@
             slide.className = 'slide-container';
             slide.style.backgroundImage = "url('floral_background.png')";
             slide.innerHTML = generateSlideHTML(c, true);
-            addFloatingElements(slide, 'fa-heart', 'floating-heart');
+            addFloatingElements(slide, 'fa-heart', ['#ff80ab', '#ff4081', '#f06292']);
             wrapper.appendChild(slide);
             const opt = document.createElement('option');
             opt.value = i;
@@ -404,9 +415,9 @@
             const idx = couples.length + i;
             const slide = document.createElement('div');
             slide.className = 'slide-container';
-            slide.style.backgroundImage = "url('festive.jpeg')";
+            slide.style.backgroundImage = "url('festive_background.webp')";
             slide.innerHTML = generateSlideHTML(e, false);
-            addFloatingElements(slide, 'fa-circle', 'floating-balloon');
+            addFloatingElements(slide, 'fa-circle', ['#2196f3', '#ff80ab', '#ffeb3b', '#d4af37'], true);
             wrapper.appendChild(slide);
             const opt = document.createElement('option');
             opt.value = idx;
@@ -417,19 +428,17 @@
         totalSlides = couples.length + eventPages.length;
     }
 
-    function addFloatingElements(parent, iconClass, specificClass) {
-        const colors = ['#ff4081', '#ff80ab', '#e91e63', '#d4af37', '#ffc107'];
-        for (let i = 0; i < 8; i++) {
+    function addFloatingElements(parent, iconClass, customColors, isBalloon = false) {
+        for (let i = 0; i < 10; i++) {
             const el = document.createElement('i');
-            el.className = `fa-solid ${iconClass} floating-element ${specificClass}`;
+            el.className = `fa-solid ${iconClass} floating-element`;
             el.style.left = Math.random() * 95 + 'vw';
             el.style.bottom = '-10%';
             el.style.fontSize = (Math.random() * 20 + 20) + 'px';
             el.style.animationDelay = (Math.random() * 5) + 's';
-            el.style.color = colors[Math.floor(Math.random() * colors.length)];
+            el.style.color = customColors[Math.floor(Math.random() * customColors.length)];
             
-            // Add shadow for balloons to make them look more 3D
-            if (specificClass === 'floating-balloon') {
+            if (isBalloon) {
                 el.style.filter = 'drop-shadow(0 2px 5px rgba(0,0,0,0.1))';
             }
             
@@ -444,18 +453,14 @@
         for (let i = 0; i < count; i++) {
             const container = document.createElement('div');
             container.className = 'hanging-heart';
-            
             const stringLen = Math.floor(Math.random() * 50) + 30;
             container.style.setProperty('--string-len', stringLen + 'px');
             container.style.animationDelay = (Math.random() * 2) + 's';
             container.style.setProperty('--heart-color', colors[Math.floor(Math.random() * colors.length)]);
-
             const string = document.createElement('div');
             string.className = 'string';
-            
             const heart = document.createElement('i');
             heart.className = 'fa-solid fa-heart';
-            
             container.appendChild(string);
             container.appendChild(heart);
             banner.appendChild(container);
@@ -466,13 +471,11 @@
         const now = Date.now();
         const delta = now - lastTick;
         lastTick = now;
-
         if (!slidesPaused) {
             progress += delta;
             const percent = (progress / duration) * 100;
             const fill = document.getElementById('progress-fill');
             if(fill) fill.style.width = Math.min(percent, 100) + '%';
-            
             if (progress >= duration) {
                 progress = 0;
                 currentSlide = (currentSlide + 1) % totalSlides;
@@ -487,17 +490,9 @@
         wrapper.style.display = 'block';
         document.getElementById('progress-container').style.display = 'block';
         document.getElementById('ui-bar').style.display = 'flex';
-        
-        // Start playing the first track
         audio.src = musicPlaylist[0];
-        audio.play().catch(() => {
-             console.log("Audio playback was blocked or failed.");
-        });
-        
-        // Ensure the loop is active
-        audio.removeEventListener('ended', playNextTrack);
+        audio.play().catch(() => {});
         audio.addEventListener('ended', playNextTrack);
-        
         lastTick = Date.now();
         requestAnimationFrame(slideLoop);
     }
@@ -520,19 +515,11 @@
     }
 
     function playNextTrack() {
-        // Find current track name from full URL
-        const currentUrlParts = audio.src.split('/');
-        const currentFilename = currentUrlParts[currentUrlParts.length - 1];
-        
-        let currentIndex = musicPlaylist.indexOf(currentFilename);
-        
-        // Increment index and loop back if at end
-        let nextIndex = (currentIndex + 1) % musicPlaylist.length;
-        
-        audio.src = musicPlaylist[nextIndex];
-        audio.play().catch(e => console.error("Error playing next track:", e));
-        
-        // Update UI if needed
+        const parts = audio.src.split('/');
+        const currentFile = parts[parts.length - 1];
+        let nextIdx = (musicPlaylist.indexOf(currentFile) + 1) % musicPlaylist.length;
+        audio.src = musicPlaylist[nextIdx];
+        audio.play().catch(e => console.error(e));
         document.getElementById('music-toggle-btn').innerHTML = '<i class="fa-solid fa-volume-high"></i>';
     }
 
@@ -544,4 +531,3 @@
 </script>
 </body>
 </html>
-
