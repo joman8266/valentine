@@ -59,7 +59,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 20px;
             animation: fadeIn 1.5s ease;
         }
 
@@ -72,21 +72,21 @@
             font-family: 'Playfair Display', serif; 
             font-size: clamp(1.8rem, 4vw, 2.8rem); 
             color: #831010; 
-            margin: 0 0 20px 0; 
+            margin: 0 0 15px 0; 
             font-style: italic;
             z-index: 20;
             text-shadow: 0 2px 10px rgba(255,255,255,0.8);
         }
 
-        /* Event Photo Grid Adjustments */
+        /* Event Photo Grid - Increased Size */
         .flex-photo-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-content: center; 
-            gap: 20px;
+            gap: 15px;
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             z-index: 20;
             margin: 0 auto;
         }
@@ -95,8 +95,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            flex: 0 1 calc(50% - 20px); 
-            max-width: calc(50% - 20px);
+            flex: 0 1 calc(50% - 15px); 
+            max-width: calc(50% - 15px);
             border: 4px solid #fff; 
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             overflow: hidden;
@@ -106,11 +106,16 @@
 
         .flex-photo-item img {
             width: 100%;
-            height: 32vh; 
+            height: 36vh; /* Increased from 32vh (~10%+ bigger) */
             object-fit: cover;
             object-position: center;
             display: block;
             transition: transform 0.5s ease;
+        }
+
+        /* Style for vertical images to zoom/focus on top */
+        .flex-photo-item img.vertical-focus {
+            object-position: top center;
         }
 
         .photo-wrapper {
@@ -123,7 +128,6 @@
             margin-bottom: 25px;
         }
 
-        /* Couple Portraits framing */
         .img-container img {
             display: block;
             max-width: 100%;
@@ -152,7 +156,7 @@
             margin-top: 15px;
         }
 
-        /* UI Styling: Transparent until hover */
+        /* UI Bar logic from previous update */
         #ui-bar {
             position: fixed; 
             bottom: 20px; 
@@ -166,14 +170,12 @@
             align-items: center;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            
-            /* 15% transparent (0.15 opacity) by default */
             opacity: 0.15;
-            transition: opacity 0.4s ease, transform 0.2s ease;
+            transition: opacity 0.4s ease;
         }
 
         #ui-bar:hover {
-            opacity: 1; /* Fully visible on hover */
+            opacity: 1;
         }
 
         .control-btn { border: none; background: none; cursor: pointer; color: #831010; font-size: 1.2rem; transition: transform 0.2s; }
@@ -183,7 +185,6 @@
         #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 6px; background: rgba(0,0,0,0.05); z-index: 10000; display: none; }
         #progress-fill { height: 100%; width: 0%; background: linear-gradient(to right, #ff4081, #e53935); transition: width 0.1s linear; }
 
-        /* Floating elements and overlay same as before... */
         .hanging-hearts-banner {
             position: absolute;
             top: -10px;
@@ -368,10 +369,7 @@
 
     let currentSlide = 0;
     let progress = 0;
-    
-    // Updated duration to 10 seconds
-    const duration = 10000; 
-    
+    const duration = 10000; // 10 seconds
     let slidesPaused = false;
     let lastTick = 0;
     let totalSlides = 0;
@@ -396,11 +394,16 @@
                 <div class="content-card">
                     <h1>${item.title}</h1>
                     <div class="flex-photo-container">
-                        ${item.imgs.map(img => `
-                            <div class="flex-photo-item">
-                                <img src="${img}" onerror="this.src='https://placehold.co/500x350?text=Event+Photo'">
-                            </div>
-                        `).join('')}
+                        ${item.imgs.map(img => {
+                            // Detect if the image is one of the vertical ones requested
+                            const isVertical = img.includes('game1.jpg') || img.includes('game2.jpg');
+                            const cssClass = isVertical ? 'vertical-focus' : '';
+                            return `
+                                <div class="flex-photo-item">
+                                    <img class="${cssClass}" src="${img}" onerror="this.src='https://placehold.co/500x350?text=Event+Photo'">
+                                </div>
+                            `;
+                        }).join('')}
                     </div>
                 </div>
             `;
