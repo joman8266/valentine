@@ -24,7 +24,6 @@
             display: none; 
         }
 
-        /* Utility class to disable transition for seamless loop reset */
         .no-transition {
             transition: none !important;
         }
@@ -42,11 +41,12 @@
             background-repeat: no-repeat;
         }
 
+        /* Background Overlays for readability */
         .slide-container::after {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.3); 
+            background: rgba(255, 255, 255, 0.25); 
             z-index: 1;
         }
 
@@ -104,12 +104,12 @@
             background: #eee;
         }
 
+        /* Event Photos: Reset to center to avoid being "too high" */
         .flex-photo-item img {
             width: 100%;
             height: 38vh;
-            /* Changed from center to top to prevent cutting off heads */
             object-fit: cover;
-            object-position: top center;
+            object-position: center;
             display: block;
         }
 
@@ -124,6 +124,7 @@
             border: none; 
         }
 
+        /* Couple Portraits: Frame to top-center to ensure faces aren't cut */
         .img-container img {
             display: block;
             max-width: 100%;
@@ -131,6 +132,7 @@
             width: auto;
             height: auto;
             object-fit: contain;
+            object-position: top center;
             border-radius: 2px;
         }
 
@@ -206,7 +208,9 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999; text-align: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: #fff5f7;
+            background-image: url('heart_background.jpg');
+            background-size: cover;
+            background-position: center;
             overflow: hidden;
         }
 
@@ -214,7 +218,7 @@
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.3);
             z-index: 1;
         }
 
@@ -408,7 +412,7 @@
         couples.forEach((c, i) => {
             const slide = document.createElement('div');
             slide.className = 'slide-container';
-            slide.style.backgroundColor = "#fff5f7";
+            slide.style.backgroundImage = "url('floral_background.png')";
             slide.innerHTML = generateSlideHTML(c, true);
             addFloatingElements(slide, 'fa-heart', ['#ff80ab', '#ff4081', '#f06292']);
             wrapper.appendChild(slide);
@@ -422,7 +426,7 @@
             const idx = couples.length + i;
             const slide = document.createElement('div');
             slide.className = 'slide-container';
-            slide.style.backgroundColor = "#fce4ec";
+            slide.style.backgroundImage = "url('festive.jpeg')";
             slide.innerHTML = generateSlideHTML(e, false);
             addFloatingElements(slide, 'fa-circle', ['#2196f3', '#ff80ab', '#ffeb3b', '#d4af37'], true);
             wrapper.appendChild(slide);
@@ -485,7 +489,7 @@
             if (progress >= duration) {
                 progress = 0;
                 if (currentSlide === totalSlides - 1) {
-                    jumpToSlideSeamless(0); // Instantly reset to the first couple slide
+                    jumpToSlideSeamless(0); 
                 } else {
                     currentSlide++;
                     jumpToSlide(currentSlide);
@@ -523,9 +527,9 @@
         currentSlide = parseInt(idx);
         progress = 0;
         slideJump.value = currentSlide;
-        wrapper.classList.add('no-transition'); // Disable scrolling animation for the reset
+        wrapper.classList.add('no-transition'); 
         wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
-        void wrapper.offsetHeight; // Force reflow
+        void wrapper.offsetHeight; 
         setTimeout(() => {
             wrapper.classList.remove('no-transition');
         }, 50);
