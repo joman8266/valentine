@@ -357,7 +357,7 @@
     const eventPages = [
         { title: "見證分享", imgs: ["share1.jpg", "share2.jpg", "share4.jpg", "share7.jpg"] },
         { title: "小組聚會花絮", imgs: ["group1.jpg", "group2.jpg", "group3.jpg", "group4.jpg"] },
-        { title: "小組遊戲", imgs: ["game1.jpg", "game2b.jpg", "game3.jpg", "game4.jpg"] },
+        { title: "小組遊戲", imgs: ["game1.jpg", "game2.jpg", "game3.jpg", "game4.jpg"] },
         { title: "小組Party", imgs: ["0a.jpg", "0b.jpg", "0c.jpg", "0d.jpg"] },
         { title: "小組Party", imgs: ["1a.jpg", "1b.jpg", "1c.jpg", "1d.jpg"] },
         { title: "小組Party", imgs: ["2.jpg", "2a.jpg", "2b.jpg", "2d.jpg"] },
@@ -395,8 +395,8 @@
                     <h1>${item.title}</h1>
                     <div class="flex-photo-container">
                         ${item.imgs.map(img => {
-                            // Focus list: game3.jpg, 6b.jpg, 0c.jpg
-                            const verticalImages = ['game3.jpg', '6b.jpg', '0c.jpg'];
+                            // Focus list: game3.jpg, 2b.jpg, 6b.jpg, 0c.jpg
+                            const verticalImages = ['game3.jpg', '2b.jpg', '6b.jpg', '0c.jpg'];
                             const isVerticalFocus = verticalImages.some(v => img.includes(v));
                             const cssClass = isVerticalFocus ? 'vertical-focus' : '';
                             return `
@@ -566,4 +566,3 @@
 </script>
 </body>
 </html>
-
