@@ -101,12 +101,15 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             padding: 0;
             overflow: hidden;
+            background: #eee;
         }
 
         .flex-photo-item img {
             width: 100%;
             height: 38vh;
+            /* Changed from center to top to prevent cutting off heads */
             object-fit: cover;
+            object-position: top center;
             display: block;
         }
 
@@ -203,9 +206,7 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999; text-align: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background-image: url('heart_background.jpg');
-            background-size: cover;
-            background-position: center;
+            background: #fff5f7;
             overflow: hidden;
         }
 
@@ -269,7 +270,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .control-btn { border: none; background: none; cursor: pointer; color: #831010; font-size: 1.2rem; }
-        .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; font-size: 0.9rem; }
+        .slide-selector { background: transparent; border: none; color: #831010; font-weight: bold; font-size: 0.9rem; max-width: 150px; }
         
         #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 5px; background: rgba(0,0,0,0.1); z-index: 10000; display: none; }
         #progress-fill { height: 100%; width: 0%; background: #ff4081; }
@@ -350,30 +351,19 @@
         { name: "Nick & Dakki", img: "Nick&Dakki.jpeg", msg: "Purest affection" },
         { name: "龍牧師 & 龍師母", img: "龍牧師&龍師母.jpeg", msg: "Hand in hand" },
         { name: "Benny & Vivian", img: "Benny&Vivian.jpeg", msg: "Radiant love" }
-        
     ];
 
     const eventPages = [
-        { title: "見證分享", imgs: ["share1.jpg", "share2.jpg", "share4.jpg", "share7.jpg"], msg: "" },
-        { title: "小組聚會花絮", imgs: ["group1.jpg", "group2.jpg", "group3.jpg", "group4.jpg"], msg: "" },
-        { title: "小組遊戲", imgs: ["game1.jpg", "game2.jpg", "game3.jpg", "game4.jpg"], msg: "" },
-        { title: "小組Party", imgs: ["0a.jpg", "0b.jpg", "0c.jpg", "0d.jpg"], msg: "" },
-        { title: "小組Party", imgs: ["1a.jpg", "1b.jpg", "1c.jpg", "1d.jpg"], msg: "" },
-        { title: "小組Party", imgs: ["2.jpg", "2a.jpg", "2b.jpg", "2d.jpg"], msg: "" },
-        { title: "小組Party", imgs: ["3a.jpg", "3b.jpg", "3c.jpg", "3d.jpg"], msg: "" },
-        { title: "小組Party", imgs: ["4a.jpg", "4b.jpg", "4c.jpg", "4d.jpg"], msg: "" },
-        { title: "小組Party", imgs: ["6a.jpg", "6b.jpg", "6c.jpg", "6d.jpg"], msg: "" },
-        { title: "小組Party", imgs: ["7a.jpg", "7b.jpg", "7c.jpg", "7d.jpg"], msg: "" },
-        { title: "晚會精彩花絮 11", imgs: ["0a.jpg", "0b.jpg", "0c.jpg", "0d.jpg"], msg: "" },
-        { title: "晚會精彩花絮 12", imgs: ["p45.jpg", "p46.jpg", "p47.jpg", "p48.jpg"], msg: "" },
-        { title: "晚會精彩花絮 13", imgs: ["p49.jpg", "p50.jpg", "p51.jpg", "p52.jpg"], msg: "" },
-        { title: "晚會精彩花絮 14", imgs: ["p53.jpg", "p54.jpg", "p55.jpg", "p56.jpg"], msg: "" },
-        { title: "晚會精彩花絮 15", imgs: ["p57.jpg", "p58.jpg", "p59.jpg", "p60.jpg"], msg: "" },
-        { title: "晚會精彩花絮 16", imgs: ["p61.jpg", "p62.jpg", "p63.jpg", "p64.jpg"], msg: "" },
-        { title: "晚會精彩花絮 17", imgs: ["p65.jpg", "p66.jpg", "p67.jpg", "p68.jpg"], msg: "" },
-        { title: "晚會精彩花絮 18", imgs: ["p69.jpg", "p70.jpg", "p71.jpg", "p72.jpg"], msg: "" },
-        { title: "晚會精彩花絮 19", imgs: ["p73.jpg", "p74.jpg", "p75.jpg", "p76.jpg"], msg: "" },
-        { title: "晚會精彩花絮 20", imgs: ["p77.jpg", "p78.jpg", "p79.jpg", "p80.jpg"], msg: "" }
+        { title: "見證分享", imgs: ["share1.jpg", "share2.jpg", "share4.jpg", "share7.jpg"] },
+        { title: "小組聚會花絮", imgs: ["group1.jpg", "group2.jpg", "group3.jpg", "group4.jpg"] },
+        { title: "小組遊戲", imgs: ["game1.jpg", "game2.jpg", "game3.jpg", "game4.jpg"] },
+        { title: "小組Party", imgs: ["0a.jpg", "0b.jpg", "0c.jpg", "0d.jpg"] },
+        { title: "小組Party", imgs: ["1a.jpg", "1b.jpg", "1c.jpg", "1d.jpg"] },
+        { title: "小組Party", imgs: ["2.jpg", "2a.jpg", "2b.jpg", "2d.jpg"] },
+        { title: "小組Party", imgs: ["3a.jpg", "3b.jpg", "3c.jpg", "3d.jpg"] },
+        { title: "小組Party", imgs: ["4a.jpg", "4b.jpg", "4c.jpg", "4d.jpg"] },
+        { title: "小組Party", imgs: ["6a.jpg", "6b.jpg", "6c.jpg", "6d.jpg"] },
+        { title: "小組Party", imgs: ["7a.jpg", "7b.jpg", "7c.jpg", "7d.jpg"] }
     ];
 
     let currentSlide = 0;
@@ -393,7 +383,7 @@
                 <div class="content-card">
                     <h1>${item.name}</h1>
                     <div class="photo-wrapper">
-                        <div class="img-container"><img src="${item.img}" onerror="this.src='https://placehold.co/600x400?text=Photo'"></div>
+                        <div class="img-container"><img src="${item.img}" onerror="this.src='https://placehold.co/600x400?text=Couple+Photo'"></div>
                     </div>
                     <div class="message-box">${item.msg}</div>
                 </div>
@@ -405,11 +395,10 @@
                     <div class="flex-photo-container">
                         ${item.imgs.map(img => `
                             <div class="flex-photo-item">
-                                <img src="${img}" onerror="this.src='https://placehold.co/500x350?text=Photo'">
+                                <img src="${img}" onerror="this.src='https://placehold.co/500x350?text=Event+Photo'">
                             </div>
                         `).join('')}
                     </div>
-                    ${item.msg ? `<div class="message-box">${item.msg}</div>` : ''}
                 </div>
             `;
         }
@@ -419,7 +408,7 @@
         couples.forEach((c, i) => {
             const slide = document.createElement('div');
             slide.className = 'slide-container';
-            slide.style.backgroundImage = "url('floral_background.png')";
+            slide.style.backgroundColor = "#fff5f7";
             slide.innerHTML = generateSlideHTML(c, true);
             addFloatingElements(slide, 'fa-heart', ['#ff80ab', '#ff4081', '#f06292']);
             wrapper.appendChild(slide);
@@ -433,7 +422,7 @@
             const idx = couples.length + i;
             const slide = document.createElement('div');
             slide.className = 'slide-container';
-            slide.style.backgroundImage = "url('sparkly.jpg')";
+            slide.style.backgroundColor = "#fce4ec";
             slide.innerHTML = generateSlideHTML(e, false);
             addFloatingElements(slide, 'fa-circle', ['#2196f3', '#ff80ab', '#ffeb3b', '#d4af37'], true);
             wrapper.appendChild(slide);
@@ -455,11 +444,7 @@
             el.style.fontSize = (Math.random() * 20 + 20) + 'px';
             el.style.animationDelay = (Math.random() * 5) + 's';
             el.style.color = customColors[Math.floor(Math.random() * customColors.length)];
-            
-            if (isBalloon) {
-                el.style.filter = 'drop-shadow(0 2px 5px rgba(0,0,0,0.1))';
-            }
-            
+            if (isBalloon) el.style.filter = 'drop-shadow(0 2px 5px rgba(0,0,0,0.1))';
             parent.appendChild(el);
         }
     }
@@ -499,10 +484,8 @@
             if(fill) fill.style.width = Math.min(percent, 100) + '%';
             if (progress >= duration) {
                 progress = 0;
-                // Seamless logic: Check if we are at the end
                 if (currentSlide === totalSlides - 1) {
-                    currentSlide = 0;
-                    jumpToSlideSeamless(0);
+                    jumpToSlideSeamless(0); // Instantly reset to the first couple slide
                 } else {
                     currentSlide++;
                     jumpToSlide(currentSlide);
@@ -517,40 +500,32 @@
         wrapper.style.display = 'block';
         document.getElementById('progress-container').style.display = 'block';
         document.getElementById('ui-bar').style.display = 'flex';
-        audio.src = musicPlaylist[0];
-        audio.play().catch(() => {});
+        
+        if (musicPlaylist.length > 0) {
+            audio.src = musicPlaylist[0];
+            audio.play().catch(() => {});
+        }
+        
         audio.addEventListener('ended', playNextTrack);
         lastTick = Date.now();
         requestAnimationFrame(slideLoop);
     }
 
-    /**
-     * Standard jump with transition
-     */
     function jumpToSlide(idx) {
         currentSlide = parseInt(idx);
         progress = 0;
         slideJump.value = currentSlide;
-        wrapper.classList.remove('no-transition'); // Ensure transition is on
+        wrapper.classList.remove('no-transition'); 
         wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
     }
 
-    /**
-     * Seamless reset jump without transition
-     */
     function jumpToSlideSeamless(idx) {
         currentSlide = parseInt(idx);
         progress = 0;
         slideJump.value = currentSlide;
-        
-        // Add no-transition class to jump instantly
-        wrapper.classList.add('no-transition');
+        wrapper.classList.add('no-transition'); // Disable scrolling animation for the reset
         wrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
-        
-        // Force reflow to ensure the browser processes the instant jump
-        void wrapper.offsetHeight;
-        
-        // Re-enable transition for the next slide movement
+        void wrapper.offsetHeight; // Force reflow
         setTimeout(() => {
             wrapper.classList.remove('no-transition');
         }, 50);
@@ -568,8 +543,9 @@
 
     function playNextTrack() {
         const parts = audio.src.split('/');
-        const currentFile = parts[parts.length - 1];
+        const currentFile = decodeURI(parts[parts.length - 1]);
         let nextIdx = (musicPlaylist.indexOf(currentFile) + 1) % musicPlaylist.length;
+        if (nextIdx < 0) nextIdx = 0;
         audio.src = musicPlaylist[nextIdx];
         audio.play().catch(e => console.error(e));
         document.getElementById('music-toggle-btn').innerHTML = '<i class="fa-solid fa-volume-high"></i>';
@@ -583,8 +559,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
