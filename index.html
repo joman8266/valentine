@@ -78,7 +78,7 @@
             text-shadow: 0 2px 10px rgba(255,255,255,0.8);
         }
 
-        /* Event Photo Grid - Increased Size */
+        /* Event Photo Grid */
         .flex-photo-container {
             display: flex;
             flex-wrap: wrap;
@@ -106,7 +106,7 @@
 
         .flex-photo-item img {
             width: 100%;
-            height: 36vh; /* Increased from 32vh (~10%+ bigger) */
+            height: 36vh; 
             object-fit: cover;
             object-position: center;
             display: block;
@@ -156,7 +156,7 @@
             margin-top: 15px;
         }
 
-        /* UI Bar logic from previous update */
+        /* UI Bar */
         #ui-bar {
             position: fixed; 
             bottom: 20px; 
@@ -361,15 +361,15 @@
         { title: "小組Party", imgs: ["0a.jpg", "0b.jpg", "0c.jpg", "0d.jpg"] },
         { title: "小組Party", imgs: ["1a.jpg", "1b.jpg", "1c.jpg", "1d.jpg"] },
         { title: "小組Party", imgs: ["2.jpg", "2a.jpg", "2b.jpg", "2d.jpg"] },
-        { title: "小組Party", imgs: ["3a.jpg", "3b.jpg", "3c.jpg", "3d.jpg"] },
-        { title: "小組Party", imgs: ["4a.jpg", "4b.jpg", "4c.jpg", "4d.jpg"] },
+        { title: "小組Party", imgs: ["3a.jpg", "3d.jpg", "3c.jpg", "3b.jpg"] },
+        { title: "小組Party", imgs: ["4a.jpg", "4b.jpg", "4d.jpg", "4c.jpg"] },
         { title: "小組Party", imgs: ["6a.jpg", "6b.jpg", "6c.jpg", "6d.jpg"] },
         { title: "小組Party", imgs: ["7a.jpg", "7b.jpg", "7c.jpg", "7d.jpg"] }
     ];
 
     let currentSlide = 0;
     let progress = 0;
-    const duration = 10000; // 10 seconds
+    const duration = 10000; 
     let slidesPaused = false;
     let lastTick = 0;
     let totalSlides = 0;
@@ -395,8 +395,9 @@
                     <h1>${item.title}</h1>
                     <div class="flex-photo-container">
                         ${item.imgs.map(img => {
-                            // Detect if the image is one of the vertical ones requested
-                            const isVertical = img.includes('game1.jpg') || img.includes('game2.jpg');
+                            // Check for vertical images that need top-center alignment
+                            const verticalImages = ['game1.jpg', 'game2.jpg', 'game3.jpg', '6b.jpg', '0c.jpg'];
+                            const isVertical = verticalImages.some(v => img.includes(v));
                             const cssClass = isVertical ? 'vertical-focus' : '';
                             return `
                                 <div class="flex-photo-item">
